@@ -1,0 +1,93 @@
+<h3 class="admin-header">Admin Actions</h3>
+<div id="actions" class="flex-parent-h-1">
+	<div class="child2 admin-div">
+		<h4 id="viewAll" class="admin-div-head">View All<br />Listings</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 id="destroySession" class="admin-div-head">Destroy<br />Session</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 id="createItem" class="admin-div-head">Create<br />Item</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Delete<br />Item</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Edit<br />Item</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Item<br />For Sale</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Item Not<br />For Sale</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Create<br />Bundle</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Delete<br />Bundle</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Add To<br />Bundle</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Delete<br />From Bundle</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Bundle<br />For Sale</h4>
+	</div>
+	<div class="child2 admin-div">
+		<h4 class="admin-div-head">Bundle Not<br />For Sale</h4>
+	</div>
+</div>
+<h3 class="admin-header-2">Active Listings</h3>
+<div id="activeListings" class="flex-parent-h-1">
+	{{#each listedItems}}
+		<div class="admin-item-card">
+			<img src="{{img}}" alt="{{name}}" />
+			<h2 class="admin-item-card-head">
+				{{name}}
+			</h2>
+			<p>${{price}}</p>
+			<button
+				class="admin-item-card-button admin-item-card-button-left"
+			>Delete</button>
+			<button class="admin-item-card-button">Edit</button>
+			<button
+				class="admin-item-card-button admin-item-card-button-right"
+			>Disable</button>
+			{{! <button class="item-card-cart">Add to Cart</button> }}
+		</div>
+	{{/each}}
+</div>
+<h3 class="admin-header-2">Inactive Listings</h3>
+<div id="inactiveListings" class="flex-parent-h-1">
+	{{#each unlistedItems}}
+		<div class="admin-item-card">
+			<img src="{{img}}" alt="{{name}}" />
+			<h2 class="admin-item-card-head">
+				{{name}}
+			</h2>
+			<p>${{price}}</p>
+			<button
+				class="admin-item-card-button admin-item-card-button-left"
+			>Delete</button>
+			<button class="admin-item-card-button">Edit</button>
+			<button
+				class="admin-item-card-button admin-item-card-button-right"
+			>Activate</button>
+		</div>
+	{{/each}}
+</div>
+
+<div id="admin-modal" class="admin-modal">
+	<div class="admin-modal-content">
+		<span class="close">&times;</span>
+		<h1 id="admin-modal-header"></h1>
+		<div id="admin-modal-content">
+
+		</div>
+	</div>
+</div>
+
+<script src="/public/js/admin.js"></script>

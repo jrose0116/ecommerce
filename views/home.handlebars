@@ -1,0 +1,33 @@
+<main>
+    <div class="flex-parent-h">
+        <div class="flex-child3">
+            <h2 class="flex-head">Shop Now</h2>
+            <div class="scroll-div">
+                <div class="flex-parent-2">
+                    {{#each shopItems}}
+                    <div class="item-card">
+                        <img src="{{img}}" alt="{{name}}" />
+                        <h2 class="item-card-head">
+                            {{name}}
+                        </h2>
+                        <p>${{price}}</p>
+                        <button class="item-card-details">Details</button>
+                        <button class="item-card-cart">Add to Cart</button>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="flex-child3">
+            <h2 class="flex-head">Check Out Our Bundles</h2>
+            <div class="scroll-div">
+            </div>
+        </div>
+        {{#if cartOn}}
+        <div class="flex-child2">
+            <h2 class="flex-head">Your Cart</h2>
+            <div class="scroll-div"></div>
+        </div>
+        {{/if}}
+    </div>
+</main>
