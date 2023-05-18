@@ -4,28 +4,16 @@
 		<h4 id="viewAll" class="admin-div-head">View All<br />Listings</h4>
 	</div>
 	<div class="child2 admin-div">
+		<h4 id="viewLogs" class="admin-div-head">Audit<br />Logs</h4>
+	</div>
+	<div class="child2 admin-div">
 		<h4 id="destroySession" class="admin-div-head">Destroy<br />Session</h4>
 	</div>
 	<div class="child2 admin-div">
 		<h4 id="createItem" class="admin-div-head">Create<br />Item</h4>
 	</div>
 	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Delete<br />Item</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Edit<br />Item</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Item<br />For Sale</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Item Not<br />For Sale</h4>
-	</div>
-	<div class="child2 admin-div">
 		<h4 class="admin-div-head">Create<br />Bundle</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Delete<br />Bundle</h4>
 	</div>
 	<div class="child2 admin-div">
 		<h4 class="admin-div-head">Add To<br />Bundle</h4>
@@ -33,50 +21,107 @@
 	<div class="child2 admin-div">
 		<h4 class="admin-div-head">Delete<br />From Bundle</h4>
 	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Bundle<br />For Sale</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Bundle Not<br />For Sale</h4>
-	</div>
 </div>
 <h3 class="admin-header-2">Active Listings</h3>
 <div id="activeListings" class="flex-parent-h-1">
 	{{#each listedItems}}
-		<div class="admin-item-card">
-			<img src="{{img}}" alt="{{name}}" />
-			<h2 class="admin-item-card-head">
-				{{name}}
-			</h2>
-			<p>${{price}}</p>
-			<button
-				class="admin-item-card-button admin-item-card-button-left"
-			>Delete</button>
-			<button class="admin-item-card-button">Edit</button>
-			<button
-				class="admin-item-card-button admin-item-card-button-right"
-			>Disable</button>
-			{{! <button class="item-card-cart">Add to Cart</button> }}
-		</div>
+	<div class="admin-item-card">
+		<img src="{{img}}" alt="{{name}}" />
+		<h2 class="admin-item-card-head">
+			{{name}}
+		</h2>
+		<p>${{price}}</p>
+		<button id="delete-{{_id}}" class="admin-item-card-button admin-item-card-button-left">Delete</button>
+		<button class="admin-item-card-button">Edit</button>
+		<button id="disable-{{_id}}" class="admin-item-card-button admin-item-card-button-right">Disable</button>
+
+		<script>
+			document.getElementById("disable-{{_id}}").addEventListener("click", (event) => {
+				$.ajax({
+					url: "/admin/disable/{{_id}}",
+					method: "POST",
+					credential: "same-origin",
+					success: (data) => {
+						try {
+							refresh()
+						} catch (e) {
+							console.log(e)
+						}
+					},
+					error: (obj, err, errT) => {
+						console.log("Error: ", obj.responseText);
+					},
+				})
+			})
+
+			document.getElementById("delete-{{_id}}").addEventListener("click", (event) => {
+				$.ajax({
+					url: "/admin/delete/{{_id}}",
+					method: "POST",
+					credential: "same-origin",
+					success: (data) => {
+						try {
+							refresh()
+						} catch (e) {
+							console.log(e)
+						}
+					},
+					error: (obj, err, errT) => {
+						console.log("Error: ", obj.responseText);
+					},
+				})
+			})
+		</script>
+	</div>
 	{{/each}}
 </div>
 <h3 class="admin-header-2">Inactive Listings</h3>
 <div id="inactiveListings" class="flex-parent-h-1">
 	{{#each unlistedItems}}
-		<div class="admin-item-card">
-			<img src="{{img}}" alt="{{name}}" />
-			<h2 class="admin-item-card-head">
-				{{name}}
-			</h2>
-			<p>${{price}}</p>
-			<button
-				class="admin-item-card-button admin-item-card-button-left"
-			>Delete</button>
-			<button class="admin-item-card-button">Edit</button>
-			<button
-				class="admin-item-card-button admin-item-card-button-right"
-			>Activate</button>
-		</div>
+	<div class="admin-item-card">
+		<img src="{{img}}" alt="{{name}}" />
+		<h2 class="admin-item-card-head">
+			{{name}}
+		</h2>
+		<p>${{price}}</p>
+		<button id="delete-{{_id}}" class="admin-item-card-button admin-item-card-button-left">Delete</button>
+		<button class="admin-item-card-button">Edit</button>
+		<button id="activate-{{_id}}" class="admin-item-card-button admin-item-card-button-right">Activate</button>
+
+		<script>
+			document.getElementById("activate-{{_id}}").addEventListener("click", (event) => {
+				$.ajax({
+					url: "/admin/activate/{{_id}}",
+					method: "POST",
+					credential: "same-origin",
+					success: (data) => {
+						refresh()
+					},
+					error: (obj, err, errT) => {
+						console.log("Error: ", obj.responseText);
+					},
+				})
+			})
+
+			document.getElementById("delete-{{_id}}").addEventListener("click", (event) => {
+				$.ajax({
+					url: "/admin/delete/{{_id}}",
+					method: "POST",
+					credential: "same-origin",
+					success: (data) => {
+						try {
+							refresh()
+						} catch (e) {
+							console.log(e)
+						}
+					},
+					error: (obj, err, errT) => {
+						console.log("Error: ", obj.responseText);
+					},
+				})
+			})
+		</script>
+	</div>
 	{{/each}}
 </div>
 
