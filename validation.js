@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 const validStr = (str, varName) => {
     let strName = varName || "String variable";
     if (!str) throw `Error: ${strName} not provided`;
