@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { items } from "../config/mongoCollections.js";
-import { validNumber, validStr } from "../validation.js";
+import { validNumber, validStr, validId } from "../validation.js";
+import { createLog } from "./audit.js";
 
 const createItem = async (name, img, price, categories, forSale) => {
 	//validation
@@ -27,6 +28,8 @@ const createItem = async (name, img, price, categories, forSale) => {
 	}
 
 	item._id = insertInfo.insertedId.toString();
+
+	await createLog("Create Item", `Name: ${item.name} | Price: ${item.price} | Image URL: ${item.img}`)
 	return item;
 };
 
@@ -56,7 +59,6 @@ const getAllItems = async () => {
 	itemList.map((item) => {
 		item._id = item._id.toString();
 	});
-
 	return itemList;
 };
 
@@ -88,4 +90,43 @@ const getUnlistedItems = async () => {
 	return itemList;
 };
 
-export { createItem, getItem, getAllItems, getListedItems, getUnlistedItems };
+const activateItem = async (itemId) => {
+	itemId = validId(itemId)
+
+	let item = await getItem(itemId)
+
+	const itemsCollection = await items()
+	let activated = await itemsCollection.updateOne({ _id: new ObjectId(itemId) }, { $set: { forSale: true } })
+
+	await createLog("Activate Item", `Name: ${item.name} | Id: ${itemId}`)
+
+	return item
+}
+
+const disableItem = async (itemId) => {
+	itemId = validId(itemId)
+
+	let item = await getItem(itemId)
+
+	const itemsCollection = await items()
+	let disabled = await itemsCollection.updateOne({ _id: new ObjectId(itemId) }, { $set: { forSale: false } })
+
+	await createLog("Disable Item", `Name: ${item.name} | Id: ${itemId}`)
+
+	return item
+}
+
+const deleteItem = async (itemId) => {
+	itemId = validId(itemId)
+
+	let item = await getItem(itemId)
+
+	const itemsCollection = await items()
+	let deleted = await itemsCollection.deleteOne({ _id: new ObjectId(itemId) })
+
+	await createLog("Delete Item", `Name: ${item.name} | Id: ${itemId}`)
+
+	return item
+}
+
+export { createItem, getItem, getAllItems, getListedItems, getUnlistedItems, activateItem, disableItem, deleteItem };
