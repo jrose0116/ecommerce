@@ -1,21 +1,22 @@
 import { dbConnection } from "./mongoConnection.js";
 
 const getCollectionFn = (collection) => {
-	let _col = undefined;
+  let _col = undefined;
 
-	return async () => {
-		if (!_col) {
-			const db = await dbConnection();
-			_col = await db.collection(collection);
-		}
+  return async () => {
+    if (!_col) {
+      const db = await dbConnection();
+      _col = await db.collection(collection);
+    }
 
-		return _col;
-	};
+    return _col;
+  };
 };
 
 export const items = getCollectionFn("items");
 export const transactions = getCollectionFn("transactions");
-export const bundles = getCollectionFn("transactions");
+export const bundles = getCollectionFn("bundles");
+export const adminlogs = getCollectionFn("adminlogs");
 
 /*
 items: {
