@@ -149,7 +149,7 @@ let addBars = async () => {
 	try {
 		for (let i in items) {
 			let item = items[i];
-			await createItem(item.name, item.img, item.price, [], i % 3 != 1);
+			await createItem(item.name, item.img, item.price, [], i % 3 != 1, false);
 		}
 	} catch (e) {
 		console.log(e)

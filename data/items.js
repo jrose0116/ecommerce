@@ -3,7 +3,7 @@ import { items } from "../config/mongoCollections.js";
 import { validNumber, validStr, validId } from "../validation.js";
 import { createLog } from "./audit.js";
 
-const createItem = async (name, img, price, categories, forSale) => {
+const createItem = async (name, img, price, categories, forSale, log) => {
 	//validation
 	try {
 		name = validStr(name, "Name");
@@ -28,8 +28,9 @@ const createItem = async (name, img, price, categories, forSale) => {
 	}
 
 	item._id = insertInfo.insertedId.toString();
-
-	await createLog("Create Item", `Name: ${item.name} | Price: ${item.price} | Image URL: ${item.img}`)
+	if (log != false) {
+		await createLog("Create Item", `Name: ${item.name} | Price: ${item.price} | Image URL: ${item.img}`)
+	}
 	return item;
 };
 
