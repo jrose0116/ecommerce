@@ -122,17 +122,17 @@ const deleteBundle = async (bundleId) => {
     return bundle
 }
 
-const editBundleItems = async (bundleId, ids) => {
+const editBundleItems = async (bundleId, editItems) => {
     let bundle = await getBundle(bundleId)
 
-    for (let id of ids) {
-        let item = await getItem(id) // Errors if any item doesn't exist
+    for (let i of editItems) {
+        let item = await getItem(i[0]) // Errors if any item doesn't exist
     }
 
     const bundlesCollection = await bundles()
-    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: ids } })
+    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: editItems } })
 
-    return ids;
+    return editItems;
 }
 
 export { createBundle, getListedBundles, getUnlistedBundles, activateBundle, disableBundle, deleteBundle, editBundleItems }
