@@ -21,6 +21,7 @@ router.get("/viewAllListings", async (req, res) => {
 		let key = process.env.key;
 		if (key == req.session.key) {
 			let data = await getAllItems();
+
 			return res.json(data);
 		} else {
 			console.log("Unauthorized: Redirected");
@@ -261,18 +262,30 @@ router.get("/:key", async (req, res) => {
 			await Promise.all(listedBundles.map(async (bundle) => {
 				bundle.images = bundle.items;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
-					let item = await getItem(id);
-					return { imgName: item.name, imgUrl: item.img }
+					let item = await getItem(id[0]);
+					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
 
 			await Promise.all(unlistedBundles.map(async (bundle) => {
 				bundle.images = bundle.items;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
-					let item = await getItem(id);
-					return { imgName: item.name, imgUrl: item.img }
+					let item = await getItem(id[0]);
+					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
+
+			listedBundles.forEach((bundle) => {
+				bundle.images.sort((a, b) => {
+					return a.imgName.localeCompare(b.imgName)
+				})
+			})
+
+			unlistedBundles.forEach((bundle) => {
+				bundle.images.sort((a, b) => {
+					return a.imgName.localeCompare(b.imgName)
+				})
+			})
 
 			return res.render("admin", {
 				key: req.session.key,

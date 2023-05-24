@@ -136,7 +136,10 @@
 				</h2>
 				<div class="bundle-images">
 					{{#each images}}
-					<img src="{{imgUrl}}" alt="{{imgName}}" />
+					<div class="bundleImgContainer">
+						<img src="{{imgUrl}}" alt="{{imgName}}" />
+						<div class="bundleImgQuantity">{{quantity}}</div>
+					</div>
 					{{/each}}
 				</div>
 				<p>${{price}}</p>
@@ -189,20 +192,24 @@
 
 									let itemsString = ""
 
+									data.items.sort((a, b) => {
+										return a.name.localeCompare(b.name)
+									})
+
 									data.items.forEach((item) => {
-										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p></div>`
+										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
 									})
 
 									form.innerHTML = `
 										<div class="edit-flex">
 										<div class="edit-col">
-											<h3>Items</h3>
+											<h3 class="edit-header">Items</h3>
 											<div id="edit-group1" droppable="true">
 												${itemsString}
 											</div>
 										</div>
 										<div class="edit-col">
-											<h3>{{name}}</h3>
+											<h3 class="edit-header">{{name}}</h3>
 											<div id="edit-group2" droppable="true"></div>
 										</div>
 										</div>
@@ -247,7 +254,11 @@
 										event.preventDefault();
 
 										const bundleItems = itemList2.querySelectorAll(".edit-item")
-										let ids = Array.from(bundleItems).map((item) => item.id)
+										let ids = Array.from(bundleItems).map((item) => {
+											let quantityInput = item.querySelector('input')
+											let quantity = parseInt(quantityInput.value)
+											return [item.id, quantity]
+										})
 
 										$.ajax({
 											url: "/admin/editbundleitems/{{_id}}",
@@ -296,7 +307,10 @@
 				</h2>
 				<div class="bundle-images">
 					{{#each images}}
-					<img src="{{imgUrl}}" alt="{{imgName}}" />
+					<div class="bundleImgContainer">
+						<img src="{{imgUrl}}" alt="{{imgName}}" />
+						<div class="bundleImgQuantity">{{quantity}}</div>
+					</div>
 					{{/each}}
 				</div>
 				<p>${{price}}</p>
@@ -349,20 +363,24 @@
 
 									let itemsString = ""
 
+									data.items.sort((a, b) => {
+										return a.name.localeCompare(b.name)
+									})
+
 									data.items.forEach((item) => {
-										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p></div>`
+										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
 									})
 
 									form.innerHTML = `
 										<div class="edit-flex">
 										<div class="edit-col">
-											<h3>Items</h3>
+											<h3 class="edit-header">Items</h3>
 											<div id="edit-group1" droppable="true">
 												${itemsString}
 											</div>
 										</div>
 										<div class="edit-col">
-											<h3>{{name}}</h3>
+											<h3 class="edit-header">{{name}}</h3>
 											<div id="edit-group2" droppable="true"></div>
 										</div>
 										</div>
@@ -407,7 +425,11 @@
 										event.preventDefault();
 
 										const bundleItems = itemList2.querySelectorAll(".edit-item")
-										let ids = Array.from(bundleItems).map((item) => item.id)
+										let ids = Array.from(bundleItems).map((item) => {
+											let quantityInput = item.querySelector('input')
+											let quantity = parseInt(quantityInput.value)
+											return [item.id, quantity]
+										})
 
 										$.ajax({
 											url: "/admin/editbundleitems/{{_id}}",
