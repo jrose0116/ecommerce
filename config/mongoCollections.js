@@ -42,6 +42,7 @@ transactions: {
 bundles: {
   name: String
   price: float
+  imgUrl: String
   items: Array (of ids)
 }
 */
