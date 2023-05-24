@@ -5,6 +5,7 @@ let viewAll = document.getElementById("viewAll");
 let viewLogs = document.getElementById("viewLogs");
 let closeButton = document.getElementsByClassName("close")[0];
 let createItem = document.getElementById("createItem");
+let createBundle = document.getElementById("createBundle");
 
 let modalContent = document.getElementById("admin-modal-content");
 let modalHead = document.getElementById("admin-modal-header");
@@ -18,6 +19,8 @@ const refresh = () => {
 		success: (data) => {
 			$("#activeListings").html($(data).filter("#activeListings").html())
 			$("#inactiveListings").html($(data).filter("#inactiveListings").html())
+
+			$("#bundles").html($(data).filter("#bundles").html())
 		},
 		error: (obj, err, errT) => {
 			console.log("Error: ", obj.responseText);
@@ -108,7 +111,7 @@ viewLogs.addEventListener("click", (event) => {
 
 				let table = document.createElement("table");
 				table.id = "modal-table";
-				modalHead.innerHTML = "View Listings";
+				modalHead.innerHTML = "View Audit Logs";
 
 				let headers = table.insertRow();
 				let hTime = document.createElement("th");
@@ -168,13 +171,19 @@ destroySession.addEventListener("click", (event) => {
 
 createItem.addEventListener("click", (event) => {
 	modalContent.innerHTML = `<form id="createForm">
+	<div>
 	<label for="create-item-name">Item Name</label>
 	<input type="text" name="create-item-name" id="create-item-name" />
+	</div>
+	<div>
 	<label for="create-item-price">Price</label>
 	<input type="number" step="0.01" name="create-item-price" id="create-item-price" />
+	</div>
+	<div>
 	<label for="create-item-imgURL">Image URL</label>
 	<input type="text" name="create-item-imgURL" id="create-item-imgURL" />
-	<input type="submit" value="Submit" />
+	</div>
+	<input id="createItemButton" type="submit" value="Submit" />
     </form>`;
 	modalHead.innerHTML = "Create Item";
 	modal.style.display = "block";
@@ -235,3 +244,79 @@ createItem.addEventListener("click", (event) => {
 		}
 	})
 });
+
+createBundle.addEventListener("click", (req, res) => {
+	modalContent.innerHTML = `<form id="createForm">
+	<div>
+	<label for="create-item-name">Item Name</label>
+	<input type="text" name="create-bundle-name" id="create-bundle-name" />
+	</div>
+	<div>
+	<label for="create-bundle-price">Price</label>
+	<input type="number" step="0.01" name="create-bundle-price" id="create-bundle-price" />
+	</div>
+	<div>
+	<label for="create-bundle-imgURL">Image URL</label>
+	<input type="text" name="create-bundle-imgURL" id="create-bundle-imgURL" />
+	</div>
+	<input id="createItemButton" type="submit" value="Submit" />
+    </form>`;
+	modalHead.innerHTML = "Create Bundle";
+	modal.style.display = "block";
+
+	let createForm = document.getElementById("createForm")
+
+	createForm.addEventListener("submit", (event) => {
+		event.preventDefault()
+		try {
+			$.ajax({
+				url: "/admin/createBundle",
+				method: "POST",
+				dataType: "json",
+				credential: "same-origin",
+				data: {
+					name: createForm.querySelector('input[name="create-bundle-name"]').value,
+					price: createForm.querySelector('input[name="create-bundle-price"]').value,
+					img: createForm.querySelector('input[name="create-bundle-imgURL"]').value,
+				},
+				success: (data) => {
+					let card = document.createElement("div")
+					card.classList.add("bundle-card", "bundle-card-preview")
+
+					const img = document.createElement("img");
+					img.src = data.img;
+					img.alt = data.name;
+
+					const name = document.createElement("h2");
+					name.classList.add("bundle-card-head");
+					name.textContent = data.name;
+
+					const price = document.createElement("p");
+					price.textContent = "$" + data.price;
+
+					const details = document.createElement("button");
+					details.classList.add("bundle-card-details");
+					details.textContent = "Details";
+
+					const cart = document.createElement("button");
+					cart.classList.add("bundle-card-cart");
+					cart.textContent = "Add to Cart";
+
+					card.appendChild(img);
+					card.appendChild(name);
+					card.appendChild(price);
+					card.appendChild(details);
+					card.appendChild(cart);
+
+					modalContent.append(card)
+					refresh()
+				},
+				error: (obj, err, errT) => {
+					console.log("Error: ", obj.responseText);
+				},
+			})
+		} catch (e) {
+			console.log("Error: ", e);
+		}
+	})
+})
