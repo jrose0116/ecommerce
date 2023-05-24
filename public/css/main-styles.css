@@ -590,16 +590,18 @@ label {
 .edit-col {
 	flex: 1;
 	padding: 10px;
-	min-height: 20vh;
 	min-width: 20vw;
-	max-height: 60vh;
-	overflow-y: auto;
 }
 
 .edit-item {
 	padding: 5px;
-	margin-bottom: 3px;
+	margin-bottom: 1px;
 	display: flex;
+	align-items: center;
+	border: 2px solid black;
+	border-left: 0px;
+	border-right: 0px;
+	gap: 8px;
 }
 
 .edit-item img {
@@ -616,7 +618,48 @@ label {
 	margin-left: 4px;
 }
 
+.edit-item input {
+	width: 30px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.edit-item input::-webkit-outer-spin-button,
+.edit-item input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.edit-item label {
+	margin-left: auto;
+}
+
+#edit-group1,
 #edit-group2 {
-	min-height: 100%;
-	max-height: 100%;
+	overflow-y: auto;
+	min-height: 50vh;
+	max-height: 50vh;
+}
+
+.edit-header {
+	font-family: 'Trebuchet MS', sans-serif;
+}
+
+.bundleImgContainer {
+	position: relative;
+	display: inline-block;
+}
+
+.bundleImgQuantity {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	width: 25px;
+	height: 25px;
+	background-color: #0084ff;
+	color: white;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 25px;
+	font-size: 14px;
 }
