@@ -13,7 +13,7 @@
 		<h4 id="createItem" class="admin-div-head">Create<br />Item</h4>
 	</div>
 	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Create<br />Bundle</h4>
+		<h4 id="createBundle" class="admin-div-head">Create<br />Bundle</h4>
 	</div>
 	<div class="child2 admin-div">
 		<h4 class="admin-div-head">Add To<br />Bundle</h4>
@@ -123,6 +123,328 @@
 		</script>
 	</div>
 	{{/each}}
+</div>
+<div id="bundles" class="flex-parent-h">
+	<div class="flex-child2">
+		<h3 class="admin-header-2">Active Bundles</h3>
+		<div id="activeBundles" class="flex-parent-v-1">
+			{{#each listedBundles}}
+			<div class="bundle-card admin-bundle-card">
+				<img src="{{img}}" alt="{{name}}" />
+				<h2 class="bundle-card-head">
+					{{name}}
+				</h2>
+				<div class="bundle-images">
+					{{#each images}}
+					<img src="{{imgUrl}}" alt="{{imgName}}" />
+					{{/each}}
+				</div>
+				<p>${{price}}</p>
+				<button id="deletebundle-{{_id}}" class="bundle-card-button bundle-card-button-left">Delete</button>
+				<button id="editbundle-{{_id}}" class="bundle-card-button">Edit</button>
+				<button id="disablebundle-{{_id}}" class="bundle-card-button bundle-card-button-right">Disable</button>
+
+				<script>
+					document.getElementById("disablebundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/disablebundle/{{_id}}",
+							method: "POST",
+							credential: "same-origin",
+							success: (data) => {
+								refresh()
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+					})
+
+					document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/deletebundle/{{_id}}",
+							method: "POST",
+							credential: "same-origin",
+							success: (data) => {
+								try {
+									refresh()
+								} catch (e) {
+									console.log(e)
+								}
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+					})
+
+					document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/getAllItems",
+							method: "GET",
+							credential: "same-origin",
+							success: (data) => {
+								try {
+									document.getElementById("admin-modal").style.display = "block";
+									let form = document.createElement("form")
+
+									let itemsString = ""
+
+									data.items.forEach((item) => {
+										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p></div>`
+									})
+
+									form.innerHTML = `
+										<div class="edit-flex">
+										<div class="edit-col">
+											<h3>Items</h3>
+											<div id="edit-group1" droppable="true">
+												${itemsString}
+											</div>
+										</div>
+										<div class="edit-col">
+											<h3>{{name}}</h3>
+											<div id="edit-group2" droppable="true"></div>
+										</div>
+										</div>
+										<input type="submit" value="Submit">`
+									document.getElementById("admin-modal-content").innerHTML = "";
+									document.getElementById("admin-modal-content").appendChild(form);
+									document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
+
+									const items = document.querySelectorAll(".edit-item")
+									const itemList1 = document.getElementById("edit-group1")
+									const itemList2 = document.getElementById("edit-group2")
+
+									items.forEach((item) => {
+										item.addEventListener('dragstart', (event) => {
+											event.dataTransfer.setData('text/plain', event.target.id)
+										})
+									})
+
+									itemList2.addEventListener('dragover', (event) => {
+										event.preventDefault();
+									})
+
+									itemList2.addEventListener('drop', (event) => {
+										event.preventDefault();
+										const itemId = event.dataTransfer.getData('text/plain');
+										const newItem = document.getElementById(itemId);
+										itemList2.appendChild(newItem);
+									})
+
+									itemList1.addEventListener('dragover', (event) => {
+										event.preventDefault();
+									})
+
+									itemList1.addEventListener('drop', (event) => {
+										event.preventDefault();
+										const itemId = event.dataTransfer.getData('text/plain');
+										const newItem = document.getElementById(itemId);
+										itemList1.appendChild(newItem);
+									})
+
+									form.addEventListener("submit", (event) => {
+										event.preventDefault();
+
+										const bundleItems = itemList2.querySelectorAll(".edit-item")
+										let ids = Array.from(bundleItems).map((item) => item.id)
+
+										$.ajax({
+											url: "/admin/editbundleitems/{{_id}}",
+											method: "POST",
+											data: { ids },
+											credential: "same-origin",
+											success: (data) => {
+												try {
+													refresh()
+													document.getElementById("admin-modal").style.display = "none";
+												} catch (e) {
+													console.log(e)
+												}
+											},
+											error: (obj, err, errT) => {
+												console.log("Error: ", obj.responseText);
+											},
+										})
+									})
+
+									refresh()
+								} catch (e) {
+									console.log(e)
+								}
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+
+
+					})
+				</script>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+	<div class="flex-child2">
+		<h3 class="admin-header-2">Inactive Bundles</h3>
+		<div id="inactiveBundles" class="flex-parent-v-1">
+			{{#each unlistedBundles}}
+			<div class="bundle-card admin-bundle-card">
+				<img src="{{img}}" alt="{{name}}" />
+				<h2 class="bundle-card-head">
+					{{name}}
+				</h2>
+				<div class="bundle-images">
+					{{#each images}}
+					<img src="{{imgUrl}}" alt="{{imgName}}" />
+					{{/each}}
+				</div>
+				<p>${{price}}</p>
+				<button id="deletebundle-{{_id}}" class="bundle-card-button bundle-card-button-left">Delete</button>
+				<button id="editbundle-{{_id}}" class="bundle-card-button">Edit</button>
+				<button id="activatebundle-{{_id}}"
+					class="bundle-card-button bundle-card-button-right">Activate</button>
+
+				<script>
+					document.getElementById("activatebundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/activatebundle/{{_id}}",
+							method: "POST",
+							credential: "same-origin",
+							success: (data) => {
+								refresh()
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+					})
+
+					document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/deletebundle/{{_id}}",
+							method: "POST",
+							credential: "same-origin",
+							success: (data) => {
+								try {
+									refresh()
+								} catch (e) {
+									console.log(e)
+								}
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+					})
+					document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
+						$.ajax({
+							url: "/admin/getAllItems",
+							method: "GET",
+							credential: "same-origin",
+							success: (data) => {
+								try {
+									document.getElementById("admin-modal").style.display = "block";
+									let form = document.createElement("form")
+
+									let itemsString = ""
+
+									data.items.forEach((item) => {
+										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p></div>`
+									})
+
+									form.innerHTML = `
+										<div class="edit-flex">
+										<div class="edit-col">
+											<h3>Items</h3>
+											<div id="edit-group1" droppable="true">
+												${itemsString}
+											</div>
+										</div>
+										<div class="edit-col">
+											<h3>{{name}}</h3>
+											<div id="edit-group2" droppable="true"></div>
+										</div>
+										</div>
+										<input type="submit" value="Submit">`
+									document.getElementById("admin-modal-content").innerHTML = "";
+									document.getElementById("admin-modal-content").appendChild(form);
+									document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
+
+									const items = document.querySelectorAll(".edit-item")
+									const itemList1 = document.getElementById("edit-group1")
+									const itemList2 = document.getElementById("edit-group2")
+
+									items.forEach((item) => {
+										item.addEventListener('dragstart', (event) => {
+											event.dataTransfer.setData('text/plain', event.target.id)
+										})
+									})
+
+									itemList2.addEventListener('dragover', (event) => {
+										event.preventDefault();
+									})
+
+									itemList2.addEventListener('drop', (event) => {
+										event.preventDefault();
+										const itemId = event.dataTransfer.getData('text/plain');
+										const newItem = document.getElementById(itemId);
+										itemList2.appendChild(newItem);
+									})
+
+									itemList1.addEventListener('dragover', (event) => {
+										event.preventDefault();
+									})
+
+									itemList1.addEventListener('drop', (event) => {
+										event.preventDefault();
+										const itemId = event.dataTransfer.getData('text/plain');
+										const newItem = document.getElementById(itemId);
+										itemList1.appendChild(newItem);
+									})
+
+									form.addEventListener("submit", (event) => {
+										event.preventDefault();
+
+										const bundleItems = itemList2.querySelectorAll(".edit-item")
+										let ids = Array.from(bundleItems).map((item) => item.id)
+
+										$.ajax({
+											url: "/admin/editbundleitems/{{_id}}",
+											method: "POST",
+											data: { ids },
+											credential: "same-origin",
+											success: (data) => {
+												try {
+													refresh()
+													document.getElementById("admin-modal").style.display = "none";
+												} catch (e) {
+													console.log(e)
+												}
+											},
+											error: (obj, err, errT) => {
+												console.log("Error: ", obj.responseText);
+											},
+										})
+									})
+
+									refresh()
+								} catch (e) {
+									console.log(e)
+								}
+							},
+							error: (obj, err, errT) => {
+								console.log("Error: ", obj.responseText);
+							},
+						})
+
+
+					})
+				</script>
+			</div>
+			{{/each}}
+		</div>
+	</div>
 </div>
 
 <div id="admin-modal" class="admin-modal">
