@@ -6,7 +6,9 @@ import {
 	getAllItems,
 	getListedItems,
 	getUnlistedItems,
+	getItem,
 } from "../data/items.js";
+import { activateBundle, createBundle, deleteBundle, disableBundle, getListedBundles, getUnlistedBundles, editBundleItems } from "../data/bundles.js"
 import { Router } from "express";
 const router = Router();
 import dotenv from "dotenv";
@@ -66,8 +68,27 @@ router.post("/createItem", async (req, res) => {
 		try {
 			name = validStr(req.body.name)
 			url = validStr(req.body.img)
-			price = validNumber(parseFloat(req.body.price))
+			price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250)
 			data = await createItem(name, url, price, [], false)
+			return res.json(data)
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+})
+
+router.post("/createBundle", async (req, res) => {
+	let name, price, url, data;
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			name = validStr(req.body.name)
+			url = validStr(req.body.img)
+			price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250)
+			data = await createBundle(name, url, price, [], false)
 			return res.json(data)
 		} catch (e) {
 			return res.status(400).json({ error: e })
@@ -93,7 +114,23 @@ router.post("/activate/:itemId", async (req, res) => {
 		console.log("Unauthorized: Redirected");
 		return res.redirect("/");
 	}
+})
 
+router.post("/activatebundle/:bundleId", async (req, res) => {
+	let bundleId
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			bundleId = validId(req.params.bundleId)
+			let result = await activateBundle(bundleId)
+			return res.json(result)
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
 })
 
 router.post("/disable/:itemId", async (req, res) => {
@@ -103,6 +140,23 @@ router.post("/disable/:itemId", async (req, res) => {
 		try {
 			itemId = validId(req.params.itemId)
 			let result = await disableItem(itemId)
+			return res.json(result)
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+})
+
+router.post("/disablebundle/:bundleId", async (req, res) => {
+	let bundleId
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			bundleId = validId(req.params.bundleId)
+			let result = await disableBundle(bundleId)
 			return res.json(result)
 		} catch (e) {
 			return res.status(400).json({ error: e })
@@ -130,6 +184,55 @@ router.post("/delete/:itemId", async (req, res) => {
 	}
 })
 
+router.post("/deletebundle/:bundleId", async (req, res) => {
+	let bundleId
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			bundleId = validId(req.params.bundleId)
+			let result = await deleteBundle(bundleId)
+			return res.json(result)
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+})
+
+router.post("/editbundleitems/:bundleId", async (req, res) => {
+	let bundleId
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			bundleId = validId(req.params.bundleId)
+			let result = await editBundleItems(bundleId, req.body.ids)
+			return res.json(result)
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+})
+
+router.get("/getAllItems", async (req, res) => {
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			let items = await getAllItems()
+			return res.json({ items })
+		} catch (e) {
+			return res.status(400).json({ error: e })
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+})
+
 router.get("/:key", async (req, res) => {
 	try {
 		let key = process.env.key;
@@ -138,6 +241,8 @@ router.get("/:key", async (req, res) => {
 
 			let listedItems = await getListedItems();
 			let unlistedItems = await getUnlistedItems();
+			let listedBundles = await getListedBundles();
+			let unlistedBundles = await getUnlistedBundles();
 
 			listedItems = listedItems.sort((a, b) => {
 				return a.name.localeCompare(b.name);
@@ -146,11 +251,28 @@ router.get("/:key", async (req, res) => {
 				return a.name.localeCompare(b.name);
 			});
 
+			listedBundles = listedBundles.sort((a, b) => {
+				return a.name.localeCompare(b.name);
+			});
+			unlistedBundles = unlistedBundles.sort((a, b) => {
+				return a.name.localeCompare(b.name);
+			});
+
+			await Promise.all(listedBundles.map(async (bundle) => {
+				bundle.images = bundle.items;
+				bundle.images = await Promise.all(bundle.images.map(async (id) => {
+					let item = await getItem(id);
+					return { imgName: item.name, imgUrl: item.img }
+				}))
+			}))
+
 			return res.render("admin", {
 				key: req.session.key,
 				title: "Admin",
 				listedItems,
 				unlistedItems,
+				listedBundles,
+				unlistedBundles
 			});
 		}
 	} catch (e) {
