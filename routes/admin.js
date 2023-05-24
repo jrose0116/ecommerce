@@ -266,6 +266,14 @@ router.get("/:key", async (req, res) => {
 				}))
 			}))
 
+			await Promise.all(unlistedBundles.map(async (bundle) => {
+				bundle.images = bundle.items;
+				bundle.images = await Promise.all(bundle.images.map(async (id) => {
+					let item = await getItem(id);
+					return { imgName: item.name, imgUrl: item.img }
+				}))
+			}))
+
 			return res.render("admin", {
 				key: req.session.key,
 				title: "Admin",
