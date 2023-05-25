@@ -63,7 +63,7 @@ let items = [
 	},
 	{
 		name: 'Spartan Scrub',
-		img: 'https://pbs.twimg.com/media/FDHD-_sUUAMyGzk.jpg',
+		img: 'https://cdn.shopify.com/s/files/1/0275/7784/3817/files/Frame1_9d4aa675-080e-454e-b002-41fff0a124e2.png?v=1683070087',
 		price: 25.99,
 	},
 	{
