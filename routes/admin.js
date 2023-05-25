@@ -208,7 +208,7 @@ router.post("/editbundleitems/:bundleId", async (req, res) => {
 	if (key == req.session.key) {
 		try {
 			bundleId = validId(req.params.bundleId)
-			let result = await editBundleItems(bundleId, req.body.ids)
+			let result = await editBundleItems(bundleId, req.body.ids || [], req.body.name, parseFloat(req.body.price))
 			return res.json(result)
 		} catch (e) {
 			return res.status(400).json({ error: e })
@@ -261,16 +261,20 @@ router.get("/:key", async (req, res) => {
 
 			await Promise.all(listedBundles.map(async (bundle) => {
 				bundle.images = bundle.items;
+				bundle.itemPriceTotal = 0;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
 					let item = await getItem(id[0]);
+					bundle.itemPriceTotal += item.price
 					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
 
 			await Promise.all(unlistedBundles.map(async (bundle) => {
 				bundle.images = bundle.items;
+				bundle.itemPriceTotal = 0;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
 					let item = await getItem(id[0]);
+					bundle.itemPriceTotal += item.price
 					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
