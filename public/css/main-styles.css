@@ -515,7 +515,6 @@ label {
 	text-transform: capitalize;
 	gap: 3px;
 	position: relative;
-	/* overflow: hidden; */
 	min-width: 70vw;
 	width: 100%;
 	text-align: center;
@@ -535,12 +534,21 @@ label {
 	margin: 0;
 	margin-left: 15px;
 	font-weight: 400;
-	font-size: xx-large;
+	font-size: x-large;
 }
 
-.bundle-card p {
+.bundle-price {
 	font-family: 'Trebuchet MS', sans-serif;
 	margin-left: auto;
+	font-size: large;
+}
+
+.crossed-price {
+	font-family: 'Trebuchet MS', sans-serif;
+	margin-left: 10px;
+	color: red;
+	text-decoration: line-through;
+	font-size: small;
 	margin-right: 30px;
 }
 

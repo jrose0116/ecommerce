@@ -15,12 +15,6 @@
 	<div class="child2 admin-div">
 		<h4 id="createBundle" class="admin-div-head">Create<br />Bundle</h4>
 	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Add To<br />Bundle</h4>
-	</div>
-	<div class="child2 admin-div">
-		<h4 class="admin-div-head">Delete<br />From Bundle</h4>
-	</div>
 </div>
 <h3 class="admin-header-2">Active Listings</h3>
 <div id="activeListings" class="flex-parent-h-1">
@@ -142,65 +136,83 @@
 					</div>
 					{{/each}}
 				</div>
-				<p>${{price}}</p>
+				<p class="bundle-price">${{price}}</p>
+				<p class="crossed-price">${{itemPriceTotal}}</p>
 				<button id="deletebundle-{{_id}}" class="bundle-card-button bundle-card-button-left">Delete</button>
 				<button id="editbundle-{{_id}}" class="bundle-card-button">Edit</button>
 				<button id="disablebundle-{{_id}}" class="bundle-card-button bundle-card-button-right">Disable</button>
 
 				<script>
-					document.getElementById("disablebundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/disablebundle/{{_id}}",
-							method: "POST",
-							credential: "same-origin",
-							success: (data) => {
-								refresh()
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
-					})
+							document.getElementById("disablebundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/disablebundle/{{_id}}",
+									method: "POST",
+									credential: "same-origin",
+									success: (data) => {
+										refresh()
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
+							})
 
-					document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/deletebundle/{{_id}}",
-							method: "POST",
-							credential: "same-origin",
-							success: (data) => {
-								try {
-									refresh()
-								} catch (e) {
-									console.log(e)
-								}
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
-					})
+							document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/deletebundle/{{_id}}",
+									method: "POST",
+									credential: "same-origin",
+									success: (data) => {
+										try {
+											refresh()
+										} catch (e) {
+											console.log(e)
+										}
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
+							})
 
-					document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/getAllItems",
-							method: "GET",
-							credential: "same-origin",
-							success: (data) => {
-								try {
-									document.getElementById("admin-modal").style.display = "block";
-									let form = document.createElement("form")
+							document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/getAllItems",
+									method: "GET",
+									credential: "same-origin",
+									success: (data) => {
+										try {
+											document.getElementById("admin-modal").style.display = "block";
+											let form = document.createElement("form")
 
-									let itemsString = ""
+											let itemsString = ""
+											let groupItemsString = ""
 
-									data.items.sort((a, b) => {
-										return a.name.localeCompare(b.name)
-									})
+											data.items.sort((a, b) => {
+												return a.name.localeCompare(b.name)
+											})
+											let ids = []
+											let quantities = []
 
-									data.items.forEach((item) => {
-										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
-									})
+											{{#each this.items}}
+												ids.push("{{this.[0]}}")
+												quantities.push("{{this.[1]}}")
+											{{/each}}
 
-									form.innerHTML = `
+											data.items.forEach((item) => {
+												if (ids.includes(item._id)) {
+													groupItemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="${quantities[ids.findIndex((i) => i == item._id)]}" name="edit-${item._id}" /></div>`
+												}
+												else {
+													itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
+												}
+											})
+
+											form.innerHTML = `
+										<label for="edit-bundle-name">Name</label>
+										<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
+										<label for="edit-bundle-price">Price</label>
+										<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
 										<div class="edit-flex">
 										<div class="edit-col">
 											<h3 class="edit-header">Items</h3>
@@ -210,87 +222,89 @@
 										</div>
 										<div class="edit-col">
 											<h3 class="edit-header">{{name}}</h3>
-											<div id="edit-group2" droppable="true"></div>
+											<div id="edit-group2" droppable="true">${groupItemsString}</div>
 										</div>
 										</div>
 										<input type="submit" value="Submit">`
-									document.getElementById("admin-modal-content").innerHTML = "";
-									document.getElementById("admin-modal-content").appendChild(form);
-									document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
+											document.getElementById("admin-modal-content").innerHTML = "";
+											document.getElementById("admin-modal-content").appendChild(form);
+											document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
 
-									const items = document.querySelectorAll(".edit-item")
-									const itemList1 = document.getElementById("edit-group1")
-									const itemList2 = document.getElementById("edit-group2")
+											const items = document.querySelectorAll(".edit-item")
+											const itemList1 = document.getElementById("edit-group1")
+											const itemList2 = document.getElementById("edit-group2")
 
-									items.forEach((item) => {
-										item.addEventListener('dragstart', (event) => {
-											event.dataTransfer.setData('text/plain', event.target.id)
-										})
-									})
+											items.forEach((item) => {
+												item.addEventListener('dragstart', (event) => {
+													event.dataTransfer.setData('text/plain', event.target.id)
+												})
+											})
 
-									itemList2.addEventListener('dragover', (event) => {
-										event.preventDefault();
-									})
+											itemList2.addEventListener('dragover', (event) => {
+												event.preventDefault();
+											})
 
-									itemList2.addEventListener('drop', (event) => {
-										event.preventDefault();
-										const itemId = event.dataTransfer.getData('text/plain');
-										const newItem = document.getElementById(itemId);
-										itemList2.appendChild(newItem);
-									})
+											itemList2.addEventListener('drop', (event) => {
+												event.preventDefault();
+												const itemId = event.dataTransfer.getData('text/plain');
+												const newItem = document.getElementById(itemId);
+												itemList2.appendChild(newItem);
+											})
 
-									itemList1.addEventListener('dragover', (event) => {
-										event.preventDefault();
-									})
+											itemList1.addEventListener('dragover', (event) => {
+												event.preventDefault();
+											})
 
-									itemList1.addEventListener('drop', (event) => {
-										event.preventDefault();
-										const itemId = event.dataTransfer.getData('text/plain');
-										const newItem = document.getElementById(itemId);
-										itemList1.appendChild(newItem);
-									})
+											itemList1.addEventListener('drop', (event) => {
+												event.preventDefault();
+												const itemId = event.dataTransfer.getData('text/plain');
+												const newItem = document.getElementById(itemId);
+												itemList1.appendChild(newItem);
+											})
 
-									form.addEventListener("submit", (event) => {
-										event.preventDefault();
+											form.addEventListener("submit", (event) => {
+												event.preventDefault();
 
-										const bundleItems = itemList2.querySelectorAll(".edit-item")
-										let ids = Array.from(bundleItems).map((item) => {
-											let quantityInput = item.querySelector('input')
-											let quantity = parseInt(quantityInput.value)
-											return [item.id, quantity]
-										})
+												const bundleItems = itemList2.querySelectorAll(".edit-item")
+												let ids = Array.from(bundleItems).map((item) => {
+													let quantityInput = item.querySelector('input')
+													let quantity = parseInt(quantityInput.value)
+													return [item.id, quantity]
+												})
+												const editName = document.getElementById("edit-bundle-name").value
+												const editPrice = document.getElementById("edit-bundle-price").value
 
-										$.ajax({
-											url: "/admin/editbundleitems/{{_id}}",
-											method: "POST",
-											data: { ids },
-											credential: "same-origin",
-											success: (data) => {
-												try {
-													refresh()
-													document.getElementById("admin-modal").style.display = "none";
-												} catch (e) {
-													console.log(e)
-												}
-											},
-											error: (obj, err, errT) => {
-												console.log("Error: ", obj.responseText);
-											},
-										})
-									})
+												$.ajax({
+													url: "/admin/editbundleitems/{{_id}}",
+													method: "POST",
+													data: { ids, name: editName, price: editPrice },
+													credential: "same-origin",
+													success: (data) => {
+														try {
+															refresh()
+															document.getElementById("admin-modal").style.display = "none";
+														} catch (e) {
+															console.log(e)
+														}
+													},
+													error: (obj, err, errT) => {
+														console.log("Error: ", obj.responseText);
+													},
+												})
+											})
 
-									refresh()
-								} catch (e) {
-									console.log(e)
-								}
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
+											refresh()
+										} catch (e) {
+											console.log(e)
+										}
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
 
 
-					})
+							})
 				</script>
 			</div>
 			{{/each}}
@@ -313,65 +327,84 @@
 					</div>
 					{{/each}}
 				</div>
-				<p>${{price}}</p>
+				<p class="bundle-price">${{price}}</p>
+				<p class="crossed-price">${{itemPriceTotal}}</p>
 				<button id="deletebundle-{{_id}}" class="bundle-card-button bundle-card-button-left">Delete</button>
 				<button id="editbundle-{{_id}}" class="bundle-card-button">Edit</button>
 				<button id="activatebundle-{{_id}}"
 					class="bundle-card-button bundle-card-button-right">Activate</button>
 
 				<script>
-					document.getElementById("activatebundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/activatebundle/{{_id}}",
-							method: "POST",
-							credential: "same-origin",
-							success: (data) => {
-								refresh()
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
-					})
+							document.getElementById("activatebundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/activatebundle/{{_id}}",
+									method: "POST",
+									credential: "same-origin",
+									success: (data) => {
+										refresh()
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
+							})
 
-					document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/deletebundle/{{_id}}",
-							method: "POST",
-							credential: "same-origin",
-							success: (data) => {
-								try {
-									refresh()
-								} catch (e) {
-									console.log(e)
-								}
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
-					})
-					document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
-						$.ajax({
-							url: "/admin/getAllItems",
-							method: "GET",
-							credential: "same-origin",
-							success: (data) => {
-								try {
-									document.getElementById("admin-modal").style.display = "block";
-									let form = document.createElement("form")
+							document.getElementById("deletebundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/deletebundle/{{_id}}",
+									method: "POST",
+									credential: "same-origin",
+									success: (data) => {
+										try {
+											refresh()
+										} catch (e) {
+											console.log(e)
+										}
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
+							})
+							document.getElementById("editbundle-{{_id}}").addEventListener("click", (event) => {
+								$.ajax({
+									url: "/admin/getAllItems",
+									method: "GET",
+									credential: "same-origin",
+									success: (data) => {
+										try {
+											document.getElementById("admin-modal").style.display = "block";
+											let form = document.createElement("form")
 
-									let itemsString = ""
+											let itemsString = ""
+											let groupItemsString = ""
 
-									data.items.sort((a, b) => {
-										return a.name.localeCompare(b.name)
-									})
+											data.items.sort((a, b) => {
+												return a.name.localeCompare(b.name)
+											})
 
-									data.items.forEach((item) => {
-										itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
-									})
+											let ids = []
+											let quantities = []
 
-									form.innerHTML = `
+											{{#each this.items}}
+												ids.push("{{this.[0]}}")
+												quantities.push("{{this.[1]}}")
+											{{/each}}
+
+											data.items.forEach((item) => {
+												if (ids.includes(item._id)) {
+													groupItemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="${quantities[ids.findIndex((i) => i == item._id)]}" name="edit-${item._id}" /></div>`
+												}
+												else {
+													itemsString += `<div id="${item._id}" class="edit-item" draggable="true"><img src="${item.img}" /><p>${item.name}</p><label for="edit-${item._id}">Quantity</label><input id="edit-${item._id}" onkeydown="if(event.key==='.' || event.key==='e'){event.preventDefault();}" type="number" step="1" min="1" value="1" name="edit-${item._id}" /></div>`
+												}
+											})
+
+											form.innerHTML = `
+										<label for="edit-bundle-name">Name</label>
+										<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
+										<label for="edit-bundle-price">Price</label>
+										<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
 										<div class="edit-flex">
 										<div class="edit-col">
 											<h3 class="edit-header">Items</h3>
@@ -381,87 +414,91 @@
 										</div>
 										<div class="edit-col">
 											<h3 class="edit-header">{{name}}</h3>
-											<div id="edit-group2" droppable="true"></div>
+											<div id="edit-group2" droppable="true">
+												${groupItemsString}
+											</div>
 										</div>
 										</div>
 										<input type="submit" value="Submit">`
-									document.getElementById("admin-modal-content").innerHTML = "";
-									document.getElementById("admin-modal-content").appendChild(form);
-									document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
+											document.getElementById("admin-modal-content").innerHTML = "";
+											document.getElementById("admin-modal-content").appendChild(form);
+											document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
 
-									const items = document.querySelectorAll(".edit-item")
-									const itemList1 = document.getElementById("edit-group1")
-									const itemList2 = document.getElementById("edit-group2")
+											const items = document.querySelectorAll(".edit-item")
+											const itemList1 = document.getElementById("edit-group1")
+											const itemList2 = document.getElementById("edit-group2")
 
-									items.forEach((item) => {
-										item.addEventListener('dragstart', (event) => {
-											event.dataTransfer.setData('text/plain', event.target.id)
-										})
-									})
+											items.forEach((item) => {
+												item.addEventListener('dragstart', (event) => {
+													event.dataTransfer.setData('text/plain', event.target.id)
+												})
+											})
 
-									itemList2.addEventListener('dragover', (event) => {
-										event.preventDefault();
-									})
+											itemList2.addEventListener('dragover', (event) => {
+												event.preventDefault();
+											})
 
-									itemList2.addEventListener('drop', (event) => {
-										event.preventDefault();
-										const itemId = event.dataTransfer.getData('text/plain');
-										const newItem = document.getElementById(itemId);
-										itemList2.appendChild(newItem);
-									})
+											itemList2.addEventListener('drop', (event) => {
+												event.preventDefault();
+												const itemId = event.dataTransfer.getData('text/plain');
+												const newItem = document.getElementById(itemId);
+												itemList2.appendChild(newItem);
+											})
 
-									itemList1.addEventListener('dragover', (event) => {
-										event.preventDefault();
-									})
+											itemList1.addEventListener('dragover', (event) => {
+												event.preventDefault();
+											})
 
-									itemList1.addEventListener('drop', (event) => {
-										event.preventDefault();
-										const itemId = event.dataTransfer.getData('text/plain');
-										const newItem = document.getElementById(itemId);
-										itemList1.appendChild(newItem);
-									})
+											itemList1.addEventListener('drop', (event) => {
+												event.preventDefault();
+												const itemId = event.dataTransfer.getData('text/plain');
+												const newItem = document.getElementById(itemId);
+												itemList1.appendChild(newItem);
+											})
 
-									form.addEventListener("submit", (event) => {
-										event.preventDefault();
+											form.addEventListener("submit", (event) => {
+												event.preventDefault();
 
-										const bundleItems = itemList2.querySelectorAll(".edit-item")
-										let ids = Array.from(bundleItems).map((item) => {
-											let quantityInput = item.querySelector('input')
-											let quantity = parseInt(quantityInput.value)
-											return [item.id, quantity]
-										})
+												const bundleItems = itemList2.querySelectorAll(".edit-item")
+												let ids = Array.from(bundleItems).map((item) => {
+													let quantityInput = item.querySelector('input')
+													let quantity = parseInt(quantityInput.value)
+													return [item.id, quantity]
+												})
+												const editName = document.getElementById("edit-bundle-name").value
+												const editPrice = document.getElementById("edit-bundle-price").value
 
-										$.ajax({
-											url: "/admin/editbundleitems/{{_id}}",
-											method: "POST",
-											data: { ids },
-											credential: "same-origin",
-											success: (data) => {
-												try {
-													refresh()
-													document.getElementById("admin-modal").style.display = "none";
-												} catch (e) {
-													console.log(e)
-												}
-											},
-											error: (obj, err, errT) => {
-												console.log("Error: ", obj.responseText);
-											},
-										})
-									})
+												$.ajax({
+													url: "/admin/editbundleitems/{{_id}}",
+													method: "POST",
+													data: { ids, name: editName, price: editPrice },
+													credential: "same-origin",
+													success: (data) => {
+														try {
+															refresh()
+															document.getElementById("admin-modal").style.display = "none";
+														} catch (e) {
+															console.log(e)
+														}
+													},
+													error: (obj, err, errT) => {
+														console.log("Error: ", obj.responseText);
+													},
+												})
+											})
 
-									refresh()
-								} catch (e) {
-									console.log(e)
-								}
-							},
-							error: (obj, err, errT) => {
-								console.log("Error: ", obj.responseText);
-							},
-						})
+											refresh()
+										} catch (e) {
+											console.log(e)
+										}
+									},
+									error: (obj, err, errT) => {
+										console.log("Error: ", obj.responseText);
+									},
+								})
 
 
-					})
+							})
 				</script>
 			</div>
 			{{/each}}

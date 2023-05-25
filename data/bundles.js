@@ -122,15 +122,17 @@ const deleteBundle = async (bundleId) => {
     return bundle
 }
 
-const editBundleItems = async (bundleId, editItems) => {
+const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
     let bundle = await getBundle(bundleId)
+    let name = validStr(editName, "Name");
+    let price = validNumber(editPrice, "Price", false, 0, 250);
 
     for (let i of editItems) {
         let item = await getItem(i[0]) // Errors if any item doesn't exist
     }
 
     const bundlesCollection = await bundles()
-    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: editItems } })
+    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: editItems, name, price } })
 
     return editItems;
 }
