@@ -264,7 +264,7 @@ router.get("/:key", async (req, res) => {
 				bundle.itemPriceTotal = 0;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
 					let item = await getItem(id[0]);
-					bundle.itemPriceTotal += item.price
+					bundle.itemPriceTotal += item.price*id[1]
 					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
@@ -274,19 +274,21 @@ router.get("/:key", async (req, res) => {
 				bundle.itemPriceTotal = 0;
 				bundle.images = await Promise.all(bundle.images.map(async (id) => {
 					let item = await getItem(id[0]);
-					bundle.itemPriceTotal += item.price
+					bundle.itemPriceTotal += item.price*id[1]
 					return { imgName: item.name, imgUrl: item.img, quantity: id[1] }
 				}))
 			}))
 
 			listedBundles.forEach((bundle) => {
 				bundle.images.sort((a, b) => {
+					bundle.itemPriceTotal = Math.round(bundle.itemPriceTotal*100)/100
 					return a.imgName.localeCompare(b.imgName)
 				})
 			})
 
 			unlistedBundles.forEach((bundle) => {
 				bundle.images.sort((a, b) => {
+					bundle.itemPriceTotal = Math.round(bundle.itemPriceTotal*100)/100
 					return a.imgName.localeCompare(b.imgName)
 				})
 			})
