@@ -554,7 +554,7 @@ label {
 
 .bundle-images {
 	margin-left: auto;
-	margin-right: auto;
+	margin-right: 35px;
 	overflow-x: auto;
 	display: flex;
 }
@@ -598,7 +598,7 @@ label {
 .edit-col {
 	flex: 1;
 	padding: 10px;
-	min-width: 20vw;
+	min-width: 25vw;
 }
 
 .edit-item {
