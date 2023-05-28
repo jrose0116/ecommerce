@@ -17,16 +17,16 @@ const refresh = () => {
 		credential: "same-origin",
 		data: {},
 		success: (data) => {
-			$("#activeListings").html($(data).filter("#activeListings").html())
-			$("#inactiveListings").html($(data).filter("#inactiveListings").html())
+			$("#activeListings").html($(data).filter("#activeListings").html());
+			$("#inactiveListings").html($(data).filter("#inactiveListings").html());
 
-			$("#bundles").html($(data).filter("#bundles").html())
+			$("#bundles").html($(data).filter("#bundles").html());
 		},
 		error: (obj, err, errT) => {
 			console.log("Error: ", obj.responseText);
 		},
-	})
-}
+	});
+};
 
 closeButton.addEventListener("click", () => {
 	modal.style.display = "none";
@@ -188,10 +188,10 @@ createItem.addEventListener("click", (event) => {
 	modalHead.innerHTML = "Create Item";
 	modal.style.display = "block";
 
-	let createForm = document.getElementById("createForm")
+	let createForm = document.getElementById("createForm");
 
 	createForm.addEventListener("submit", (event) => {
-		event.preventDefault()
+		event.preventDefault();
 		try {
 			$.ajax({
 				url: "/admin/createItem",
@@ -199,13 +199,16 @@ createItem.addEventListener("click", (event) => {
 				dataType: "json",
 				credential: "same-origin",
 				data: {
-					name: createForm.querySelector('input[name="create-item-name"]').value,
-					price: createForm.querySelector('input[name="create-item-price"]').value,
-					img: createForm.querySelector('input[name="create-item-imgURL"]').value,
+					name: createForm.querySelector('input[name="create-item-name"]')
+						.value,
+					price: createForm.querySelector('input[name="create-item-price"]')
+						.value,
+					img: createForm.querySelector('input[name="create-item-imgURL"]')
+						.value,
 				},
 				success: (data) => {
-					let card = document.createElement("div")
-					card.classList.add("item-card", "item-card-preview")
+					let card = document.createElement("div");
+					card.classList.add("item-card", "item-card-preview");
 
 					const img = document.createElement("img");
 					img.src = data.img;
@@ -232,23 +235,23 @@ createItem.addEventListener("click", (event) => {
 					card.appendChild(details);
 					card.appendChild(cart);
 
-					modalContent.append(card)
-					refresh()
+					modalContent.append(card);
+					refresh();
 				},
 				error: (obj, err, errT) => {
 					console.log("Error: ", obj.responseText);
 				},
-			})
+			});
 		} catch (e) {
 			console.log("Error: ", e);
 		}
-	})
+	});
 });
 
 createBundle.addEventListener("click", (req, res) => {
 	modalContent.innerHTML = `<form id="createForm">
 	<div>
-	<label for="create-item-name">Item Name</label>
+	<label for="create-item-name">Bundle Name</label>
 	<input type="text" name="create-bundle-name" id="create-bundle-name" />
 	</div>
 	<div>
@@ -264,10 +267,10 @@ createBundle.addEventListener("click", (req, res) => {
 	modalHead.innerHTML = "Create Bundle";
 	modal.style.display = "block";
 
-	let createForm = document.getElementById("createForm")
+	let createForm = document.getElementById("createForm");
 
 	createForm.addEventListener("submit", (event) => {
-		event.preventDefault()
+		event.preventDefault();
 		try {
 			$.ajax({
 				url: "/admin/createBundle",
@@ -275,13 +278,16 @@ createBundle.addEventListener("click", (req, res) => {
 				dataType: "json",
 				credential: "same-origin",
 				data: {
-					name: createForm.querySelector('input[name="create-bundle-name"]').value,
-					price: createForm.querySelector('input[name="create-bundle-price"]').value,
-					img: createForm.querySelector('input[name="create-bundle-imgURL"]').value,
+					name: createForm.querySelector('input[name="create-bundle-name"]')
+						.value,
+					price: createForm.querySelector('input[name="create-bundle-price"]')
+						.value,
+					img: createForm.querySelector('input[name="create-bundle-imgURL"]')
+						.value,
 				},
 				success: (data) => {
-					let card = document.createElement("div")
-					card.classList.add("bundle-card", "bundle-card-preview")
+					let card = document.createElement("div");
+					card.classList.add("bundle-card", "bundle-card-preview");
 
 					const img = document.createElement("img");
 					img.src = data.img;
@@ -308,15 +314,15 @@ createBundle.addEventListener("click", (req, res) => {
 					card.appendChild(details);
 					card.appendChild(cart);
 
-					modalContent.append(card)
-					refresh()
+					modalContent.append(card);
+					refresh();
 				},
 				error: (obj, err, errT) => {
 					console.log("Error: ", obj.responseText);
 				},
-			})
+			});
 		} catch (e) {
 			console.log("Error: ", e);
 		}
-	})
-})
+	});
+});
