@@ -142,7 +142,7 @@ body {
 	gap: 8px;
 }
 
-.flex-parent-2>* {
+.flex-parent-2 > * {
 	flex-basis: calc(33% - 27px);
 }
 
@@ -232,7 +232,6 @@ body {
 }
 
 @media screen and (max-width: 800px) {
-
 	.flex-child2,
 	.flex-child3 {
 		flex-basis: 100%;
@@ -477,7 +476,7 @@ td {
 }
 
 #createForm {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 	display: flex;
 	flex-direction: column;
 	width: fit-content;
@@ -497,7 +496,7 @@ label {
 #createForm #createItemButton {
 	padding: 10px 40px;
 	background-color: white;
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 	border: 2px black solid;
 	border-radius: 5px;
 	margin: 10px;
@@ -530,7 +529,7 @@ label {
 }
 
 .bundle-card-head {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 	margin: 0;
 	margin-left: 15px;
 	font-weight: 400;
@@ -538,13 +537,13 @@ label {
 }
 
 .bundle-price {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 	margin-left: auto;
 	font-size: large;
 }
 
 .crossed-price {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 	margin-left: 10px;
 	color: red;
 	text-decoration: line-through;
@@ -578,7 +577,7 @@ label {
 
 .admin-bundle-card {
 	min-width: 0px;
-	width: calc(100% - 25px);
+	width: 97%;
 }
 
 .flex-parent-v-1 {
@@ -650,7 +649,7 @@ label {
 }
 
 .edit-header {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: "Trebuchet MS", sans-serif;
 }
 
 .bundleImgContainer {
@@ -670,4 +669,47 @@ label {
 	text-align: center;
 	line-height: 25px;
 	font-size: 14px;
+}
+
+.admin-cart-card {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	text-transform: capitalize;
+	gap: 3px;
+	position: relative;
+	text-align: center;
+	justify-content: space-between;
+	width: fit-content;
+}
+
+.admin-cart-card img {
+	height: 45px;
+	text-align: left;
+	object-fit: contain;
+	border-radius: 5px;
+	margin: 0;
+	margin-right: 10px;
+}
+
+.admin-cart-card p {
+	white-space: nowrap;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.flex-parent-v-2 {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	overflow-y: auto;
+}
+
+#admin-totalCart {
+	margin-left: 25px;
+	font-family: "Trebuchet MS", sans-serif;
 }

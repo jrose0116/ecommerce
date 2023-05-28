@@ -506,6 +506,22 @@
 	</div>
 </div>
 
+<h3 class="admin-header-2">Session Cart</h3>
+<div id="sessionCart" class="flex-parent-v-2">
+	{{#each cartItems}}
+	<div class="admin-cart-card">
+		<img src="{{img}}" alt="{{name}}" />
+		<h2 class="admin-item-card-head">
+			{{name}}
+		</h2>
+		<p>${{price}} x {{quantity}}</p>
+	</div>
+	{{/each}}
+</div>
+<p id="admin-totalCart">
+	Total: ${{cartTotal}}
+</p>
+
 <div id="admin-modal" class="admin-modal">
 	<div class="admin-modal-content">
 		<span class="close">&times;</span>

@@ -12,7 +12,28 @@
                         </h2>
                         <p>${{price}}</p>
                         <button class="item-card-details">Details</button>
-                        <button class="item-card-cart">Add to Cart</button>
+                        <button id="addToCart-{{_id}}" class="item-card-cart">Add to Cart</button>
+
+                        <script>
+                            document.getElementById("addToCart-{{_id}}").addEventListener("click", (event) => {
+                                $.ajax({
+                                    url: "/items/addToCart/{{_id}}",
+                                    method: "POST",
+                                    credential: "same-origin",
+                                    success: (data) => {
+                                        try {
+                                            document.getElementById("addToCart-{{_id}}").innerHTML = `Added - ${data.quantity}`
+                                            //refresh()
+                                        } catch (e) {
+                                            console.log(e)
+                                        }
+                                    },
+                                    error: (obj, err, errT) => {
+                                        console.log("Error: ", obj.responseText);
+                                    },
+                                })
+                            })
+                        </script>
                     </div>
                     {{/each}}
                 </div>
@@ -23,11 +44,11 @@
             <div class="scroll-div">
             </div>
         </div>
-        {{#if cartOn}}
+        {{!-- {{#if cartOn}}
         <div class="flex-child2">
             <h2 class="flex-head">Your Cart</h2>
             <div class="scroll-div"></div>
         </div>
-        {{/if}}
+        {{/if}} --}}
     </div>
 </main>
