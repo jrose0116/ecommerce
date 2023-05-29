@@ -22,7 +22,7 @@ router.route("/addToCart/:itemId").post(async (req, res) => {
 
 		let cart = req.session.cart;
 		let found = false;
-		let quant = 0;
+		let quant = 1;
 		cart.map((citem) => {
 			if (citem[0] == itemId) {
 				found = true;
