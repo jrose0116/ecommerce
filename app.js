@@ -33,6 +33,6 @@ app.set("view engine", "handlebars");
 
 configRoutes(app);
 
-app.listen(80, () => {
-    console.log("Server running. http://localhost")
+app.listen(3000, () => {
+    console.log("Server running. http://localhost:3000")
 })
