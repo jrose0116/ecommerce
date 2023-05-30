@@ -37,6 +37,8 @@ router.route("/addToCart/:itemId").post(async (req, res) => {
 
 		req.session.cart = cart;
 
+		cartTotal = cartTotal.toFixed(2)
+
 		return res.json({ success: true, item, quantity: quant, cartTotal });
 	} catch (e) {
 		return res.status(400).json({ success: false, error: e });
@@ -67,6 +69,8 @@ router.route("/removeFromCart/:itemId").post(async (req, res) => {
 		if (!found) throw "Error: Item not in cart";
 
 		req.session.cart = cart;
+
+		cartTotal = cartTotal.toFixed(2)
 
 		return res.json({ success: true, item, quantity: quant, cartTotal });
 	} catch (e) {

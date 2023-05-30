@@ -3,6 +3,7 @@ import checkoutRoutes, { getCartItems } from "./cart.js";
 import itemsRoutes from "./items.js";
 import adminRoutes from "./admin.js";
 import { getListedBundles } from "../data/bundles.js";
+import bcrypt from "bcrypt";
 
 const constructor = (app) => {
 
@@ -29,6 +30,17 @@ const constructor = (app) => {
 	});
 
 	app.use("/admin", adminRoutes);
+
+	app.use("/adminkey/:key", async (req, res) => {		
+		let key = await bcrypt.hash(process.env.key, 5);
+		if (await bcrypt.compare(req.params.key, key)) {
+			req.session.key = key;
+			res.redirect("/admin")
+		}
+		else {
+			res.redirect("/")
+		}
+	})
 
 	app.get("/", async (req, res) => {
 		let shopItems = await getListedItems();
