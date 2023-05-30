@@ -3,6 +3,7 @@ import {
 	deleteItem,
 	disableItem,
 	createItem,
+	editItem,
 	getAllItems,
 	getListedItems,
 	getUnlistedItems,
@@ -22,6 +23,7 @@ const router = Router();
 import dotenv from "dotenv";
 import { validNumber, validStr, validId } from "../validation.js";
 import { getLogs } from "../data/audit.js";
+
 dotenv.config();
 
 router.get("/viewAllListings", async (req, res) => {
@@ -232,6 +234,27 @@ router.post("/editbundleitems/:bundleId", async (req, res) => {
 	}
 });
 
+router.post("/edititem/:itemId", async (req, res) => {
+	let itemId;
+	let key = process.env.key;
+	if (key == req.session.key) {
+		try {
+			itemId = validId(req.params.itemId);
+			let result = await editItem(
+				itemId,
+				req.body.name,
+				parseFloat(req.body.price)
+			);
+			return res.json(result);
+		} catch (e) {
+			return res.status(400).json({ error: e });
+		}
+	} else {
+		console.log("Unauthorized: Redirected");
+		return res.redirect("/");
+	}
+});
+
 router.get("/getAllItems", async (req, res) => {
 	let key = process.env.key;
 	if (key == req.session.key) {
@@ -300,18 +323,7 @@ router.get("/:key", async (req, res) => {
 				})
 			);
 
-			let cartTotal = 0;
-			let cartItems = req.session.cart;
-
-			cartItems = await Promise.all(
-				cartItems.map(async (cItem) => {
-					let quant = cItem[1];
-					let item = await getItem(cItem[0]);
-					item.quantity = quant;
-					cartTotal += item.price * quant;
-					return item;
-				})
-			);
+			// let {cartItems, cartTotal} = await getCartItems(req.session.cart)
 
 			listedBundles.forEach((bundle) => {
 				bundle.images.sort((a, b) => {
@@ -330,12 +342,10 @@ router.get("/:key", async (req, res) => {
 			return res.render("admin", {
 				key: req.session.key,
 				title: "Admin",
-				cartItems,
 				listedItems,
 				unlistedItems,
 				listedBundles,
 				unlistedBundles,
-				cartTotal,
 			});
 		}
 	} catch (e) {
