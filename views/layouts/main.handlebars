@@ -75,9 +75,80 @@
 				</svg>
 			</a>
 			{{/if}}
-			<a class="nav-elem" href="/checkout">
-				<p class="nav-elem-text">Checkout</p>
-				<svg class="nav-elem-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+			<div id="checkout-elem" class="nav-elem">
+				{{#if cartExist}}
+				<div id="nav-elem-checkout">
+					<h2 class="cart-card-head">Your Cart</h2>
+					<div id="cart-card-items">
+						{{#each cartItems}}
+						<div class="cart-card">
+							<img class="cart-card-img" src="{{img}}" alt="{{name}}" />
+							<h2 class="cart-card-name">
+								{{name}}
+							</h2>
+							<div class="cart-card-price">
+								<p id="cart-price-{{_id}}">${{price}} x {{quantity}}</p>
+								<div>
+									<a id="dec-{{_id}}" class="cart-card-button">-</a>
+									<a id="inc-{{_id}}" class="cart-card-button">+</a>
+								</div>
+							</div>
+							<script>
+								document.getElementById("inc-{{_id}}").addEventListener("click", (event) => {
+									event.preventDefault()
+									$.ajax({
+										url: "/items/addToCart/{{_id}}",
+										method: "POST",
+										credential: "same-origin",
+										success: (data) => {
+											try {
+												document.getElementById("cart-price-{{_id}}").innerHTML = `${{price}} x ${data.quantity}`
+												document.getElementById("cart-card-total").innerHTML = `Total: $${data.cartTotal}`
+											} catch (e) {
+												console.log(e)
+											}
+										},
+										error: (obj, err, errT) => {
+											console.log("Error: ", obj.responseText);
+										},
+                                	})
+								})
+
+								document.getElementById("dec-{{_id}}").addEventListener("click", (event) => {
+									event.preventDefault()
+									$.ajax({
+										url: "/items/removeFromCart/{{_id}}",
+										method: "POST",
+										credential: "same-origin",
+										success: (data) => {
+											try {
+												if(data.quantity <= 0){
+													refresh2()
+												}
+												else{
+													document.getElementById("cart-price-{{_id}}").innerHTML = `${{price}} x ${data.quantity}`
+													document.getElementById("cart-card-total").innerHTML = `Total: $${data.cartTotal}`
+												}
+											} catch (e) {
+												console.log(e)
+											}
+										},
+										error: (obj, err, errT) => {
+											console.log("Error: ", obj.responseText);
+										},
+                                	})
+								})
+							</script>
+						</div>
+						{{/each}}
+					</div>
+					<p id="cart-card-total">Total: ${{cartTotal}}</p>
+					<a href="/checkout" class="cart-button">Check Out</a>
+				</div>
+				{{else}}
+				<div id="nav-elem-checkout">Your Cart is Empty</div>
+				{{/if}}
+				<svg class="nav-elem-svg nav-cart-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 902.86 902.86" xml:space="preserve"
 					transform="matrix(-1, 0, 0, 1, 0, 0)">
 					<g id="SVGRepo_iconCarrier">
@@ -93,7 +164,7 @@
 						</g>
 					</g>
 				</svg>
-			</a>
+			</div>
 		</div>
 	</div>
 	{{{body}}}
@@ -101,5 +172,6 @@
 		{{title}}
 	</div>
 </body>
+<script src="/public/js/main.js"></script>
 
 </html>
