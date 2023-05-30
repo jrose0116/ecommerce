@@ -23,7 +23,8 @@
                                     success: (data) => {
                                         try {
                                             document.getElementById("addToCart-{{_id}}").innerHTML = `Added - ${data.quantity}`
-                                            //refresh()
+                                            setTimeout(()=>{document.getElementById("addToCart-{{_id}}").innerHTML = `Add to Cart`}, 3000)
+                                            refresh2()
                                         } catch (e) {
                                             console.log(e)
                                         }
