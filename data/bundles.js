@@ -10,6 +10,7 @@ const createBundle = async (name, img, price, items, forSale, log) => {
         name = validStr(name, "Name");
         img = validStr(img, "Image");
         price = validNumber(price, "Price", false, 0, 250);
+        price = price.toFixed(2)
     } catch (e) {
         throw e;
     }
@@ -123,9 +124,11 @@ const deleteBundle = async (bundleId) => {
 }
 
 const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
+    bundleId = validId(bundleId)
     let bundle = await getBundle(bundleId)
     let name = validStr(editName, "Name");
     let price = validNumber(editPrice, "Price", false, 0, 250);
+    price = price.toFixed(2)
 
     for (let i of editItems) {
         let item = await getItem(i[0]) // Errors if any item doesn't exist
