@@ -9,6 +9,7 @@ const createItem = async (name, img, price, categories, forSale, log) => {
 		name = validStr(name, "Name");
 		img = validStr(img, "Image");
 		price = validNumber(price, "Price", false, 0, 500);
+		price = price.toFixed(2)
 	} catch (e) {
 		throw e;
 	}
@@ -130,4 +131,21 @@ const deleteItem = async (itemId) => {
 	return item
 }
 
-export { createItem, getItem, getAllItems, getListedItems, getUnlistedItems, activateItem, disableItem, deleteItem };
+const editItem = async (itemId, editName, editPrice) => {
+	itemId = validId(itemId)
+    let item = await getItem(itemId)
+    let name = validStr(editName, "Name");
+    let price = validNumber(editPrice, "Price", false, 0, 250);
+	price = price.toFixed(2)
+
+    const itemsCollection = await items()
+    let activated = await itemsCollection.updateOne({ _id: new ObjectId(itemId) }, { $set: { name, price } })
+
+	await createLog("Edit Item", `Name: ${item.name} | Id: ${itemId} | Price: ${item.price} | Updated Name: ${editName} | Updated Price: ${editPrice}`)
+
+	item = await getItem(itemId)
+
+    return item;
+}
+
+export { createItem, getItem, getAllItems, getListedItems, getUnlistedItems, activateItem, disableItem, deleteItem, editItem };
