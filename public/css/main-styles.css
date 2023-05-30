@@ -69,16 +69,16 @@ body {
 #bot-bar {
 	position: fixed;
 	font-family: "Trebuchet MS", sans-serif;
-	/* font-weight:; */
 	color: #4a535e;
 	background-color: white;
 	box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
 	font-size: 70px;
 	bottom: 0px;
-	width: 100%;
+	width: calc(100% - 95px);
 	margin: 0 0;
 	left: 75px;
 	padding-left: 10px;
+	padding-right: 10px;
 	padding-bottom: 5px;
 	z-index: 1;
 }
@@ -706,10 +706,114 @@ label {
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
+	margin-left: calc(1vw - 7px);
 	overflow-y: auto;
 }
 
 #admin-totalCart {
 	margin-left: 25px;
 	font-family: "Trebuchet MS", sans-serif;
+}
+
+#nav-elem-checkout {
+	position: absolute;
+	display: none;
+	flex-direction: column;
+	gap: 5px;
+	left: 85px;
+	color: white;
+	width: 500px;
+	background-color: #4a535e;
+	box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-top: 7px;
+	transform: translateY(calc(-100% + 30px));
+}
+
+.cart-card {
+	width: 100%;
+	display: flex;
+	/* align-content: space-around; */
+	justify-content: space-between;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	margin: 3px 0;
+}
+
+#cart-card-items {
+	padding: 10px 0;
+	max-height: 70vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	border: 4px solid #343a42;
+}
+
+.nav-elem:hover #nav-elem-checkout, #nav-elem-checkout:hover {
+	display: flex;
+}
+
+
+.cart-card-img {
+	margin-left: 10px;
+	width: 75px;
+	min-width: none;
+}
+
+.cart-card-price, .cart-card-name {
+	width: 100%;
+	height: fit-content;
+	margin: auto 0px;
+	min-width: fit-content;
+}
+
+.cart-card-price {
+	flex-basis: 40%;
+	white-space: nowrap;
+}
+
+.cart-card-price p {
+	margin: 2px;
+	white-space: nowrap;
+}
+
+.cart-card-button {
+	display: inline-block;
+	padding: 5px 0;
+	width: 40px;
+	background-color: #343a42;
+}
+
+.cart-card-price div {
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 5px;
+}
+
+.cart-button {
+	width: 100%;
+	padding: 20px 0;
+	background-color: #343a42;
+	color: white;
+	text-decoration: none;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+#cart-card-total {
+	font-size: larger;
+	margin: 10px;
+}
+
+.cart-card-head {
+	margin: 10px;
+	font-size: xx-large;
+}
+
+.cart-card-name {
+	font-size: large;
 }
