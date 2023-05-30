@@ -21,6 +21,7 @@ const refresh = () => {
 			$("#inactiveListings").html($(data).filter("#inactiveListings").html());
 
 			$("#bundles").html($(data).filter("#bundles").html());
+			refresh2();
 		},
 		error: (obj, err, errT) => {
 			console.log("Error: ", obj.responseText);
