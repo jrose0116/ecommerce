@@ -93,6 +93,54 @@
 									<a id="inc-{{_id}}" class="cart-card-button">+</a>
 								</div>
 							</div>
+							{{#if isBundle}}
+							<script>
+								document.getElementById("inc-{{_id}}").addEventListener("click", (event) => {
+									event.preventDefault()
+									$.ajax({
+										url: "/bundles/addToCart/{{_id}}",
+										method: "POST",
+										credential: "same-origin",
+										success: (data) => {
+											try {
+												document.getElementById("cart-price-{{_id}}").innerHTML = `${{price}} x ${data.quantity}`
+												document.getElementById("cart-card-total").innerHTML = `Total: $${data.cartTotal}`
+											} catch (e) {
+												console.log(e)
+											}
+										},
+										error: (obj, err, errT) => {
+											console.log("Error: ", obj.responseText);
+										},
+                                	})
+								})
+
+								document.getElementById("dec-{{_id}}").addEventListener("click", (event) => {
+									event.preventDefault()
+									$.ajax({
+										url: "/bundles/removeFromCart/{{_id}}",
+										method: "POST",
+										credential: "same-origin",
+										success: (data) => {
+											try {
+												if(data.quantity <= 0){
+													refresh2()
+												}
+												else{
+													document.getElementById("cart-price-{{_id}}").innerHTML = `${{price}} x ${data.quantity}`
+													document.getElementById("cart-card-total").innerHTML = `Total: $${data.cartTotal}`
+												}
+											} catch (e) {
+												console.log(e)
+											}
+										},
+										error: (obj, err, errT) => {
+											console.log("Error: ", obj.responseText);
+										},
+                                	})
+								})
+							</script>
+							{{else}}
 							<script>
 								document.getElementById("inc-{{_id}}").addEventListener("click", (event) => {
 									event.preventDefault()
@@ -139,6 +187,7 @@
                                 	})
 								})
 							</script>
+							{{/if}}
 						</div>
 						{{/each}}
 					</div>
