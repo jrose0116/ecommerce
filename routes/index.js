@@ -1,6 +1,7 @@
 import { getListedItems, getItem } from "../data/items.js";
 import checkoutRoutes, { getCartItems } from "./cart.js";
 import itemsRoutes from "./items.js";
+import bundlesRoutes from "./bundles.js";
 import adminRoutes from "./admin.js";
 import { getListedBundles } from "../data/bundles.js";
 import bcrypt from "bcrypt";
@@ -25,9 +26,7 @@ const constructor = (app) => {
 		return res.render("browse", { title: "Browse" });
 	});
 
-	app.get("/bundles", async (req, res) => {
-		return res.render("bundles", { title: "Bundles" });
-	});
+	app.use("/bundles", bundlesRoutes);
 
 	app.use("/admin", adminRoutes);
 
@@ -76,8 +75,6 @@ const constructor = (app) => {
 
 		return res.render("home", {
 			title: "Home",
-			cartOn: req.session.cart?.length != 0,
-			cart: req.session.cart,
 			shopItems: shopItems,
 			shopBundles: shopBundles,
 		});
