@@ -140,4 +140,4 @@ const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
     return editItems;
 }
 
-export { createBundle, getListedBundles, getUnlistedBundles, activateBundle, disableBundle, deleteBundle, editBundleItems }
+export { getBundle, createBundle, getListedBundles, getUnlistedBundles, activateBundle, disableBundle, deleteBundle, editBundleItems }
