@@ -9,7 +9,8 @@ const refresh2 = () => {
 		credential: "same-origin",
 		data: {},
 		success: (data) => {
-      $("#checkout-elem").html($(data).find("#checkout-elem").html());		},
+      		$("#checkout-elem").html($(data).find("#checkout-elem").html());
+		},
 		error: (obj, err, errT) => {
 			console.log("Error: ", obj.responseText);
 		},
