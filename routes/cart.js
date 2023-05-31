@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getItem } from "../data/items.js";
+import { getBundle } from "../data/bundles.js";
 const router = Router();
 
 export async function getCartItems(cart) {
@@ -9,10 +10,20 @@ export async function getCartItems(cart) {
 	cartItems = await Promise.all(
 		cartItems.map(async (cItem) => {
 			let quant = cItem[1];
-			let item = await getItem(cItem[0]);
-			item.quantity = quant;
-			cartTotal += item.price * quant;
-			return item;
+			if(cItem[2] == "item"){
+				let item = await getItem(cItem[0]);
+				item.quantity = quant;
+				item.isBundle = false;
+				cartTotal += item.price * quant;
+				return item;
+			}
+			if(cItem[2] == "bundle"){
+				let bundle = await getBundle(cItem[0]);
+				bundle.quantity = quant;
+				bundle.isBundle = true;
+				cartTotal += bundle.price * quant;
+				return bundle;
+			}
 		})
 	);
 
