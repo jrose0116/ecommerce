@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getItem } from "../data/items.js";
+import { getBundle } from "../data/bundles.js"
 import { validId } from "../validation.js";
 const router = Router();
 
@@ -30,10 +31,20 @@ router.route("/addToCart/:itemId").post(async (req, res) => {
 				citem[1]++;
 				quant = citem[1];
 			}
-			item = await getItem(citem[0])
-			cartTotal += item.price * citem[1]
+			if(citem[2] == "bundle") {
+                let bundle = await getBundle(citem[0])
+                cartTotal += bundle.price * citem[1]
+            }
+            else {
+                item = await getItem(citem[0])
+			    cartTotal += item.price * citem[1]
+            }
 		}));
-		if (!found) cart.push([itemId, 1]);
+		item = await getItem(itemId);
+		if (!found) { 
+			cart.push([itemId, 1, "item"])
+			cartTotal += item.price*1
+		};
 
 		req.session.cart = cart;
 
@@ -61,8 +72,14 @@ router.route("/removeFromCart/:itemId").post(async (req, res) => {
 				citem[1] -= 1;
 				quant = citem[1];
 			}
-			item = await getItem(citem[0])
-			cartTotal += item.price * citem[1]
+			if(citem[2] == "bundle") {
+                let bundle = await getBundle(citem[0])
+                cartTotal += bundle.price * citem[1]
+            }
+            else {
+                item = await getItem(citem[0])
+			    cartTotal += item.price * citem[1]
+            }
 		}));
 		cart = cart.filter((citem) => citem[1] != 0 )
 
