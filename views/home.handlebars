@@ -11,7 +11,7 @@
                             {{name}}
                         </h2>
                         <p>${{price}}</p>
-                        <button class="item-card-details">Details</button>
+                        <button id="details-{{_id}}" class="item-card-details">Details</button>
                         <button id="addToCart-{{_id}}" class="item-card-cart">Add to Cart</button>
 
                         <script>
@@ -35,6 +35,45 @@
                                     },
                                 })
                             })
+
+                            document.getElementById("details-{{_id}}").addEventListener("click", (event) => {
+                                document.getElementById("modal").style.display = "block";
+                                let detailDiv = document.createElement("div")
+                                detailDiv.classList.add("flex-parent-h2")
+                                detailDiv.innerHTML = detailDiv.innerHTML = `
+                                    <img class="details-img" src="{{img}}" alt="{{name}}">
+                                    <div>
+                                        <p class="details-price">Price: ${{price}}</p>
+                                        <p class="details-description">Description would go here</p>
+                                        <button id="addToCart2-{{_id}}" class="details-cart">Add to Cart</button>
+                                    </div>
+                                `;
+
+                                document.getElementById("modal-content").innerHTML = "";
+				                document.getElementById("modal-content").appendChild(detailDiv);
+				                document.getElementById("modal-header").innerHTML = "{{name}}"
+
+                                document.getElementById("addToCart2-{{_id}}").addEventListener("click", (event) => {
+                                    event.preventDefault()
+                                    $.ajax({
+                                        url: "/bundles/addToCart/{{_id}}",
+                                        method: "POST",
+                                        credential: "same-origin",
+                                        success: (data) => {
+                                            try {
+                                                document.getElementById("addToCart2-{{_id}}").innerHTML = `Added - ${data.quantity}`
+                                                setTimeout(()=>{document.getElementById("addToCart2-{{_id}}").innerHTML = `Add to Cart`}, 3000)
+                                                refresh2()
+                                            } catch (e) {
+                                                console.log(e)
+                                            }
+                                        },
+                                        error: (obj, err, errT) => {
+                                            console.log("Error: ", obj.responseText);
+                                        },
+                                    })
+                                })
+                            })
                         </script>
                     </div>
                     {{/each}}
@@ -45,7 +84,7 @@
                             {{name}}
                         </h2>
                         <p>${{price}}</p>
-                        <button class="item-card-details">Details</button>
+                        <button id="details-{{_id}}" class="item-card-details">Details</button>
                         <button id="addToCart-{{_id}}" class="item-card-cart">Add to Cart</button>
 
                         <script>
@@ -69,22 +108,59 @@
                                     },
                                 })
                             })
+
+                            document.getElementById("details-{{_id}}").addEventListener("click", (event) => {
+                                document.getElementById("modal").style.display = "block";
+                                let detailDiv = document.createElement("div")
+                                detailDiv.classList.add("flex-parent-h2")
+                                detailDiv.innerHTML = detailDiv.innerHTML = `
+                                    <img class="details-img" src="{{img}}" alt="{{name}}">
+                                    <div>
+                                        <p class="details-price">Price: ${{price}}</p>
+                                        <p class="details-description">Description would go here</p>
+                                        <button id="addToCart2-{{_id}}" class="details-cart">Add to Cart</button>
+                                    </div>
+                                `;
+
+                                document.getElementById("modal-content").innerHTML = "";
+				                document.getElementById("modal-content").appendChild(detailDiv);
+				                document.getElementById("modal-header").innerHTML = "{{name}}"
+
+                                document.getElementById("addToCart2-{{_id}}").addEventListener("click", (event) => {
+                                    event.preventDefault()
+                                    $.ajax({
+                                        url: "/items/addToCart/{{_id}}",
+                                        method: "POST",
+                                        credential: "same-origin",
+                                        success: (data) => {
+                                            try {
+                                                document.getElementById("addToCart2-{{_id}}").innerHTML = `Added - ${data.quantity}`
+                                                setTimeout(()=>{document.getElementById("addToCart2-{{_id}}").innerHTML = `Add to Cart`}, 3000)
+                                                refresh2()
+                                            } catch (e) {
+                                                console.log(e)
+                                            }
+                                        },
+                                        error: (obj, err, errT) => {
+                                            console.log("Error: ", obj.responseText);
+                                        },
+                                    })
+                                })
+                            })
                         </script>
                     </div>
                     {{/each}}
                 </div>
             </div>
         </div>
-        {{!-- <div class="flex-child3">
-            <h2 class="flex-head">Check Out Our Bundles</h2>
-            <div class="scroll-div">
-            </div>
-        </div> --}}
-        {{!-- {{#if cartOn}}
-        <div class="flex-child2">
-            <h2 class="flex-head">Your Cart</h2>
-            <div class="scroll-div"></div>
-        </div>
-        {{/if}} --}}
     </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h1 id="modal-header"></h1>
+            <div id="modal-content">
+        </div>
+	</div>
+</div>
+<script src="/public/js/home.js"></script>
 </main>
