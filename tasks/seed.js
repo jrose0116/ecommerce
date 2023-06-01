@@ -203,7 +203,7 @@ let northPoleBundle = await createBundle('North Pole Bundle', 'https://cdn.shopi
 let area51 = await createItem('Area 51 Bricc', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/products/20210407_DrSquatch_GalaxyBundle_ProductPhotos_IMG_2601_3a12326d-f088-4de3-be21-229ef3dde823.png?v=1651519848', 7.99, [], true, false)
 let blackHole = await createItem('Black Hole', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/products/Frame2024.png?v=1681324173', 7.99, [], true, false)
 let marsBar = await createItem('Mars Bar', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/products/drsquatch_marsbarsoap_1200PNG_0005.png?v=1651519384', 7.99, [], true, false)
-let moonRock = await createItem('Mars Bar', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/products/drsquatch_moonrocksoap_PSD_0006.png?v=1651518996', 7.99, [], true, false)
+let moonRock = await createItem('Moon Rock', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/products/drsquatch_moonrocksoap_PSD_0006.png?v=1651518996', 7.99, [], true, false)
 
 let galaxyBundle = await createBundle('Galaxy Bundle', 'https://cdn.shopify.com/s/files/1/0275/7784/3817/files/galaxy_bundle_image_new.png?v=1681250481', 28.99, [[area51._id, 1], [blackHole._id, 1], [marsBar._id, 1], [moonRock._id, 1]], true, false)
 
