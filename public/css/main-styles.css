@@ -872,6 +872,26 @@ label {
 	display: flex;
 	flex-direction: row;
 	/* justify-content: space-around; */
-	gap: 10px;
+	gap: 30px;
 	flex-wrap: wrap;
+}
+
+.details-bundle-item-image {
+	height: 30px;
+	margin-right: 5px;
+	display: inline;
+}
+
+.details-bundle-item-name{
+	display: inline;
+	vertical-align: middle;
+	margin: auto 0;
+	font-size: 20px;
+}
+
+.details-bundle-item {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	margin-bottom: 5px;
 }

@@ -43,6 +43,15 @@
                                 detailDiv.innerHTML = detailDiv.innerHTML = `
                                     <img class="details-img" src="{{img}}" alt="{{name}}">
                                     <div>
+                                        <div class="details-bundle-contents">
+                                            <p>Bundle Contents: </p>
+                                            {{#each images}}
+                                            <div class="details-bundle-item">
+                                                <img class="details-bundle-item-image" src="{{imgUrl}} alt="{{imgName}}"/>
+                                                <p class="details-bundle-item-name">{{imgName}} x {{quantity}}</p>
+                                            </div>
+                                            {{/each}}
+                                        </div>
                                         <p class="details-price">Price: ${{price}}</p>
                                         <p class="details-description">Description would go here</p>
                                         <button id="addToCart2-{{_id}}" class="details-cart">Add to Cart</button>
