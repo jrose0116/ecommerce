@@ -845,7 +845,7 @@ label {
 	margin: auto;
 	padding: 20px;
 	border: 1px solid #888;
-	min-width: 30%;
+	min-width: 50%;
 	max-width: 80%;
 	max-height: 80%;
 	overflow-x: auto;
@@ -859,6 +859,7 @@ label {
 .details-img {
 	flex-basis: calc(50% - 40px);
 	width: 50%;
+	height: inherit;
 	display: inline;
 }
 
