@@ -4,7 +4,7 @@ import { validNumber, validStr, validId } from "../validation.js";
 import { createLog } from "./audit.js";
 import { getItem } from "./items.js";
 
-const createBundle = async (name, img, price, items, forSale, log) => {
+const createBundle = async (name, img, price, items, description, forSale, log) => {
     //validation
     try {
         name = validStr(name, "Name");
@@ -20,6 +20,7 @@ const createBundle = async (name, img, price, items, forSale, log) => {
         img,
         price,
         items,
+        description,
         forSale: forSale || false,
     };
 

@@ -42,7 +42,8 @@
                                 detailDiv.classList.add("flex-parent-h2")
                                 detailDiv.innerHTML = detailDiv.innerHTML = `
                                     <img class="details-img" src="{{img}}" alt="{{name}}">
-                                    <div>
+                                    <div class="details-main">
+                                        <p class="details-description">{{description}}</p>
                                         <div class="details-bundle-contents">
                                             <p>Bundle Contents: </p>
                                             {{#each images}}
@@ -53,7 +54,6 @@
                                             {{/each}}
                                         </div>
                                         <p class="details-price">Price: ${{price}}</p>
-                                        <p class="details-description">Description would go here</p>
                                         <button id="addToCart2-{{_id}}" class="details-cart">Add to Cart</button>
                                     </div>
                                 `;
@@ -124,9 +124,9 @@
                                 detailDiv.classList.add("flex-parent-h2")
                                 detailDiv.innerHTML = detailDiv.innerHTML = `
                                     <img class="details-img" src="{{img}}" alt="{{name}}">
-                                    <div>
+                                    <div class="details-main">
+                                        <p class="details-description">{{description}}</p>
                                         <p class="details-price">Price: ${{price}}</p>
-                                        <p class="details-description">Description would go here</p>
                                         <button id="addToCart2-{{_id}}" class="details-cart">Add to Cart</button>
                                     </div>
                                 `;

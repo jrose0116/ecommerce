@@ -73,8 +73,9 @@ router.post("/createItem", async (req, res) => {
 	try {
 		name = validStr(req.body.name);
 		url = validStr(req.body.img);
+		description = validStr(req.body.description);
 		price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250);
-		data = await createItem(name, url, price, [], false);
+		data = await createItem(name, url, price, [], description, false);
 		return res.json(data);
 	} catch (e) {
 		return res.status(400).json({ error: e });
@@ -86,6 +87,7 @@ router.post("/createBundle", async (req, res) => {
 	try {
 		name = validStr(req.body.name);
 		url = validStr(req.body.img);
+		description = validStr(req.body.description);
 		price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250);
 		data = await createBundle(name, url, price, [], false);
 		return res.json(data);
@@ -164,10 +166,11 @@ router.post("/editbundleitems/:bundleId", async (req, res) => {
 	let bundleId;
 	try {
 		bundleId = validId(req.params.bundleId);
+		let name = validStr(req.body.name)
 		let result = await editBundleItems(
 			bundleId,
 			req.body.ids || [],
-			req.body.name,
+			name,
 			parseFloat(req.body.price)
 		);
 		return res.json(result);

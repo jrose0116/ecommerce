@@ -3,7 +3,7 @@ import { items } from "../config/mongoCollections.js";
 import { validNumber, validStr, validId } from "../validation.js";
 import { createLog } from "./audit.js";
 
-const createItem = async (name, img, price, categories, forSale, log) => {
+const createItem = async (name, img, price, categories, description, forSale, log) => {
 	//validation
 	try {
 		name = validStr(name, "Name");
@@ -19,6 +19,7 @@ const createItem = async (name, img, price, categories, forSale, log) => {
 		img,
 		price,
 		categories,
+		description,
 		forSale: forSale || false,
 	};
 

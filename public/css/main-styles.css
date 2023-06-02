@@ -857,7 +857,7 @@ label {
 }
 
 .details-img {
-	flex-basis: 50%;
+	flex-basis: calc(50% - 40px);
 	width: 50%;
 	display: inline;
 }
@@ -894,4 +894,9 @@ label {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	margin-bottom: 5px;
+}
+
+.details-main {
+	flex-basis: calc(50% - 40px);
+	width: calc(50% - 40px);
 }
