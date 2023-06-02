@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { items } from "../config/mongoCollections.js";
 import { validNumber, validStr, validId } from "../validation.js";
 import { createLog } from "./audit.js";
+import { deleteItemFromBundles } from "./bundles.js"
 
 const createItem = async (name, img, price, categories, description, forSale, log) => {
 	//validation
@@ -122,11 +123,12 @@ const disableItem = async (itemId) => {
 const deleteItem = async (itemId) => {
 	itemId = validId(itemId)
 
+	await deleteItemFromBundles(itemId)
 	let item = await getItem(itemId)
-
+	
 	const itemsCollection = await items()
 	let deleted = await itemsCollection.deleteOne({ _id: new ObjectId(itemId) })
-
+	
 	await createLog("Delete Item", `Name: ${item.name} | Id: ${itemId}`)
 
 	return item

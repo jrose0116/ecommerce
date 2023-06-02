@@ -141,4 +141,22 @@ const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
     return editItems;
 }
 
-export { getBundle, createBundle, getListedBundles, getUnlistedBundles, activateBundle, disableBundle, deleteBundle, editBundleItems }
+const deleteItemFromBundles = async(itemId) => {
+    itemId = validId(itemId)
+    let item = await getItem(itemId)
+
+    const bundlesCollection = await bundles()
+
+    let findBundles = await bundlesCollection.find({ items: {$elemMatch: { $elemMatch: { $eq: itemId }}}}).toArray();
+
+    findBundles = await Promise.all(
+        findBundles.map(async (bundle) => {
+        bundle.items = bundle.items.filter((item)=>item[0]!=itemId)
+        await bundlesCollection.updateOne({_id: bundle._id}, {$set: {items: bundle.items, forSale: false}})
+    })
+    )
+
+    return {item, deleted:true}
+}
+
+export { getBundle, createBundle, getListedBundles, getUnlistedBundles, activateBundle, disableBundle, deleteBundle, editBundleItems, deleteItemFromBundles }
