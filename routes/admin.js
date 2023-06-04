@@ -167,11 +167,13 @@ router.post("/editbundleitems/:bundleId", async (req, res) => {
 	try {
 		bundleId = validId(req.params.bundleId);
 		let name = validStr(req.body.name)
+		let description = validStr(req.body.description)
 		let result = await editBundleItems(
 			bundleId,
 			req.body.ids || [],
 			name,
-			parseFloat(req.body.price)
+			parseFloat(req.body.price),
+			description
 		);
 		return res.json(result);
 	} catch (e) {
@@ -186,7 +188,8 @@ router.post("/edititem/:itemId", async (req, res) => {
 		let result = await editItem(
 			itemId,
 			req.body.name,
-			parseFloat(req.body.price)
+			parseFloat(req.body.price),
+			req.body.description
 		);
 		return res.json(result);
 	} catch (e) {

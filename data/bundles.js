@@ -124,11 +124,12 @@ const deleteBundle = async (bundleId) => {
     return bundle
 }
 
-const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
+const editBundleItems = async (bundleId, editItems, editName, editPrice, editDesc) => {
     bundleId = validId(bundleId)
     let bundle = await getBundle(bundleId)
     let name = validStr(editName, "Name");
     let price = validNumber(editPrice, "Price", false, 0, 250);
+    let description = validStr(editDesc, "Description")
     price = price.toFixed(2)
 
     for (let i of editItems) {
@@ -136,7 +137,7 @@ const editBundleItems = async (bundleId, editItems, editName, editPrice) => {
     }
 
     const bundlesCollection = await bundles()
-    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: editItems, name, price } })
+    let activated = await bundlesCollection.updateOne({ _id: new ObjectId(bundleId) }, { $set: { items: editItems, name, price, description } })
 
     return editItems;
 }
