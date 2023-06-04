@@ -21,11 +21,11 @@ import {
 import { Router } from "express";
 const router = Router();
 import dotenv from "dotenv";
+dotenv.config();
 import { validNumber, validStr, validId } from "../validation.js";
 import { getLogs } from "../data/audit.js";
 import bcrypt from "bcrypt";
 
-dotenv.config();
 
 router.use("/", async (req, res, next) => {
 	try {
@@ -88,7 +88,6 @@ router.post("/createBundle", async (req, res) => {
 		name = validStr(req.body.name);
 		url = validStr(req.body.img);
 		description = validStr(req.body.description);
-		console.log(description)
 		price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250);
 		data = await createBundle(name, url, price, [], description, false, true);
 		return res.json(data);
