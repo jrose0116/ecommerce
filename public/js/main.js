@@ -19,6 +19,10 @@ const refresh2 = () => {
 
 document.getElementById('checkout-elem').onmouseover = () => {
   document.getElementById('nav-elem-checkout').style.display = "flex";
+  document.getElementById('cart-close-button').addEventListener("click", (event) =>{
+	event.preventDefault();
+	document.getElementById('nav-elem-checkout').style.display = "none"
+})
   clearTimeout(timeout)
 }
 

@@ -901,3 +901,37 @@ label {
 	flex-basis: calc(50% - 40px);
 	width: calc(50% - 40px);
 }
+
+@media screen and (max-width: 600px) {
+	#nav-elem-checkout {
+		width: calc(90vw - 20px);
+		left: 20px;
+		right: 20px;
+		bottom: -275px;
+		z-index: 3;
+		border: 2px solid #343a42
+	}
+
+	.modal-content {
+		width: 90vw;
+	}
+
+	.details-img {
+		flex-basis: 100%;
+	}
+
+	.details-main {
+		flex-basis: 100%;
+	}
+
+	.cart-card {
+		justify-content: space-between;
+		width: 100vw;
+	}
+}
+
+#cart-close-button {
+	position: absolute;
+    top: 5px;
+    right: 5px;
+}

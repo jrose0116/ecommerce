@@ -193,9 +193,13 @@
 					</div>
 					<p id="cart-card-total">Total: ${{cartTotal}}</p>
 					<a href="/checkout" class="cart-button">Check Out</a>
+					<a id="cart-close-button" class="cart-card-button">X</a>
 				</div>
 				{{else}}
-				<div id="nav-elem-checkout">Your Cart is Empty</div>
+				<div id="nav-elem-checkout">Your Cart is Empty
+
+				<a id="cart-close-button" class="cart-card-button">X</a>
+				</div>
 				{{/if}}
 				<svg class="nav-elem-svg nav-cart-svg" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 902.86 902.86" xml:space="preserve"
