@@ -957,11 +957,16 @@ label {
 	gap: 10px;
 }
 
-#authForm button {
+#authForm button, .admin-submit {
 	display: block;
 	background-color: #4e5364;
 	color: white;
 	padding: 10px 15px;
 	border-radius: 5px;
 	border: 0px;
+}
+
+#admin-modal-content input, #admin-modal-content label, #admin-modal-content textarea {
+	margin-bottom: 5px;
+	font-family: 'Trebuchet MS', sans-serif;
 }

@@ -71,13 +71,20 @@
 				let form = document.createElement("form")
 
 				form.innerHTML =`
-				<label for="edit-item-name">Name</label>
-				<input type="text" id="edit-item-name" name="edit-item-name" value="{{name}}" />
-				<label for="edit-item-price">Price</label>
-				<input type="number" step="0.01" name="edit-item-price" id="edit-item-price" value="{{price}}" />
-				<label for="edit-item-desc">Description</label>
-				<input type="text" id="edit-item-desc" name="edit-item-desc" value="{{description}}" />
-				<input type="submit" value="Submit" />
+				<div>
+					<label for="edit-item-name">Name</label>
+					<input type="text" id="edit-item-name" name="edit-item-name" value="{{name}}" />
+				</div>
+				<div>
+					<label for="edit-item-price">Price</label>
+					<input type="number" step="0.01" name="edit-item-price" id="edit-item-price" value="{{price}}" />
+				</div>
+				<div>
+					<label for="edit-item-desc">Description</label>
+					<br>
+					<textarea id="edit-item-desc" name="edit-item-desc" rows="4" cols="60">{{description}}</textarea>
+				</div>
+				<input type="submit" class="admin-submit" value="Submit" />
 				`
 				
 
@@ -166,11 +173,22 @@
 				let form = document.createElement("form")
 
 				form.innerHTML =`
-				<label for="edit-item-name">Name</label>
-				<input type="text" id="edit-item-name" name="edit-item-name" value="{{name}}" />
-				<label for="edit-item-price">Price</label>
-				<input type="number" step="0.01" name="edit-item-price" id="edit-item-price" value="{{price}}" />
-				<input type="submit" value="Submit" />`
+				<div>
+					<label for="edit-item-name">Name</label>
+					<input type="text" id="edit-item-name" name="edit-item-name" value="{{name}}" />
+				</div>
+				<div>
+					<label for="edit-item-price">Price</label>
+					<input type="number" step="0.01" name="edit-item-price" id="edit-item-price" value="{{price}}" />
+				</div>
+				<div>
+					<label for="edit-item-desc">Description</label>
+					<br>
+					<textarea id="edit-item-desc" name="edit-item-desc" rows="4" cols="60">{{description}}</textarea>
+				</div>
+				<input type="submit" class="admin-submit" value="Submit" />
+				`
+				
 
 				document.getElementById("admin-modal-content").innerHTML = "";
 				document.getElementById("admin-modal-content").appendChild(form);
@@ -181,11 +199,12 @@
 
 					const editName = document.getElementById("edit-item-name").value
 					const editPrice = document.getElementById("edit-item-price").value
+					const editDescription = document.getElementById("edit-item-desc").value
 
 					$.ajax({
 						url: "/admin/edititem/{{_id}}",
 						method: "POST",
-						data: { name: editName, price: editPrice },
+						data: { name: editName, price: editPrice, description: editDescription },
 						credential: "same-origin",
 						success: (data) => {
 							try {
@@ -296,25 +315,33 @@
 											})
 
 											form.innerHTML = `
-										<label for="edit-bundle-name">Name</label>
-										<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
-										<label for="edit-bundle-price">Price</label>
-										<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
-										<label for="edit-bundle-description">Description</label>
-										<input type="text" id="edit-bundle-description" name="edit-bundle-description" value="{{description}}" />
-										<div class="edit-flex">
-										<div class="edit-col">
-											<h3 class="edit-header">Items</h3>
-											<div id="edit-group1" droppable="true">
-												${itemsString}
-											</div>
-										</div>
-										<div class="edit-col">
-											<h3 class="edit-header">{{name}}</h3>
-											<div id="edit-group2" droppable="true">${groupItemsString}</div>
-										</div>
-										</div>
-										<input type="submit" value="Submit">`
+												<div>
+													<label for="edit-bundle-name">Name</label>
+													<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
+												</div>
+												<div>
+													<label for="edit-bundle-price">Price</label>
+													<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
+												</div>
+												<div>
+													<label for="edit-bundle-description">Description</label>
+													<br>
+													<textarea rows="4" cols="60" id="edit-bundle-description" name="edit-bundle-description">{{description}}</textarea>
+												</div>
+
+												<div class="edit-flex">
+												<div class="edit-col">
+													<h3 class="edit-header">Items</h3>
+													<div id="edit-group1" droppable="true">
+														${itemsString}
+													</div>
+												</div>
+												<div class="edit-col">
+													<h3 class="edit-header">{{name}}</h3>
+													<div id="edit-group2" droppable="true">${groupItemsString}</div>
+												</div>
+												</div>
+												<input type="submit" class="admin-submit" value="Submit">`
 											document.getElementById("admin-modal-content").innerHTML = "";
 											document.getElementById("admin-modal-content").appendChild(form);
 											document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
@@ -470,7 +497,6 @@
 											data.items.sort((a, b) => {
 												return a.name.localeCompare(b.name)
 											})
-
 											let ids = []
 											let quantities = []
 
@@ -489,25 +515,32 @@
 											})
 
 											form.innerHTML = `
-										<label for="edit-bundle-name">Name</label>
-										<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
-										<label for="edit-bundle-price">Price</label>
-										<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
-										<div class="edit-flex">
-										<div class="edit-col">
-											<h3 class="edit-header">Items</h3>
-											<div id="edit-group1" droppable="true">
-												${itemsString}
-											</div>
-										</div>
-										<div class="edit-col">
-											<h3 class="edit-header">{{name}}</h3>
-											<div id="edit-group2" droppable="true">
-												${groupItemsString}
-											</div>
-										</div>
-										</div>
-										<input type="submit" value="Submit">`
+												<div>
+													<label for="edit-bundle-name">Name</label>
+													<input type="text" id="edit-bundle-name" name="edit-bundle-name" value="{{name}}" />
+												</div>
+												<div>
+													<label for="edit-bundle-price">Price</label>
+													<input type="number" step="0.01" name="edit-bundle-price" id="edit-bundle-price" value="{{price}}" />
+												</div>
+												<div>
+													<label for="edit-bundle-description">Description</label>
+													<br>
+													<textarea rows="4" cols="60" id="edit-bundle-description" name="edit-bundle-description">{{description}}</textarea>
+												</div>
+												<div class="edit-flex">
+												<div class="edit-col">
+													<h3 class="edit-header">Items</h3>
+													<div id="edit-group1" droppable="true">
+														${itemsString}
+													</div>
+												</div>
+												<div class="edit-col">
+													<h3 class="edit-header">{{name}}</h3>
+													<div id="edit-group2" droppable="true">${groupItemsString}</div>
+												</div>
+												</div>
+												<input type="submit" class="admin-submit" value="Submit">`
 											document.getElementById("admin-modal-content").innerHTML = "";
 											document.getElementById("admin-modal-content").appendChild(form);
 											document.getElementById("admin-modal-header").innerHTML = "Edit {{name}}"
@@ -555,11 +588,12 @@
 												})
 												const editName = document.getElementById("edit-bundle-name").value
 												const editPrice = document.getElementById("edit-bundle-price").value
+												const editDescription = document.getElementById("edit-bundle-description").value
 
 												$.ajax({
 													url: "/admin/editbundleitems/{{_id}}",
 													method: "POST",
-													data: { ids, name: editName, price: editPrice },
+													data: { ids, name: editName, price: editPrice, description: editDescription },
 													credential: "same-origin",
 													success: (data) => {
 														try {
@@ -574,7 +608,6 @@
 													},
 												})
 											})
-
 										} catch (e) {
 											console.log(e)
 										}
