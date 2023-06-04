@@ -134,15 +134,16 @@ const deleteItem = async (itemId) => {
 	return item
 }
 
-const editItem = async (itemId, editName, editPrice) => {
+const editItem = async (itemId, editName, editPrice, editDesc) => {
 	itemId = validId(itemId)
     let item = await getItem(itemId)
     let name = validStr(editName, "Name");
     let price = validNumber(editPrice, "Price", false, 0, 250);
+	let description = validStr(editDesc, "Description")
 	price = price.toFixed(2)
 
     const itemsCollection = await items()
-    let activated = await itemsCollection.updateOne({ _id: new ObjectId(itemId) }, { $set: { name, price } })
+    let activated = await itemsCollection.updateOne({ _id: new ObjectId(itemId) }, { $set: { name, price, description } })
 
 	await createLog("Edit Item", `Name: ${item.name} | Id: ${itemId} | Price: ${item.price} | Updated Name: ${editName} | Updated Price: ${editPrice}`)
 
