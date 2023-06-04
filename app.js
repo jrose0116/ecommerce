@@ -14,6 +14,7 @@ app.use(
     session({
         name: "AuthCookie",
         secret: "secret string",
+        key: "",
         resave: false,
         saveUninitialized: false,
         cart: [],

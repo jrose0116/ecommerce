@@ -5,6 +5,8 @@ import bundlesRoutes from "./bundles.js";
 import adminRoutes from "./admin.js";
 import { getListedBundles } from "../data/bundles.js";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config();
 
 const constructor = (app) => {
 
@@ -30,14 +32,27 @@ const constructor = (app) => {
 
 	app.use("/admin", adminRoutes);
 
-	app.use("/adminkey/:key", async (req, res) => {		
+	app.post("/auth", async (req, res) => {
 		let key = await bcrypt.hash(process.env.key, 5);
-		if (await bcrypt.compare(req.params.key, key)) {
+		if (await bcrypt.compare(req.body.accessKey, key)) {
 			req.session.key = key;
 			res.redirect("/admin")
 		}
 		else {
 			res.redirect("/")
+		}
+	})
+
+	app.get("/auth", async (req,res) => {
+		try {
+			if (await bcrypt.compare(process.env.key, req.session.key || "")) {
+				res.redirect("/admin")
+			} else {
+				res.render("accesskey", {title: "Authentication"})
+			}
+		} catch (e) {
+			console.log(e)
+			return res.redirect("/");
 		}
 	})
 
