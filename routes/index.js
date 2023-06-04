@@ -28,6 +28,10 @@ const constructor = (app) => {
 		return res.render("browse", { title: "Browse" });
 	});
 
+	app.get("/onsale", async (req, res) => {
+		return res.render("onsale", { title: "On Sale" });
+	});
+
 	app.use("/bundles", bundlesRoutes);
 
 	app.use("/admin", adminRoutes);

@@ -51,6 +51,7 @@
 	box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.5);
 	padding: 5px;
 	margin-top: 7px;
+	white-space: nowrap;
 }
 
 .nav-elem:hover .nav-elem-text {
