@@ -184,6 +184,10 @@ createItem.addEventListener("click", (event) => {
 	<label for="create-item-imgURL">Image URL</label>
 	<input type="text" name="create-item-imgURL" id="create-item-imgURL" />
 	</div>
+	<div>
+	<label for="create-item-desc">Description</label>
+	<input type="text" name="create-item-desc" id="create-item-desc" />
+	</div>
 	<input id="createItemButton" type="submit" value="Submit" />
     </form>`;
 	modalHead.innerHTML = "Create Item";
@@ -205,6 +209,8 @@ createItem.addEventListener("click", (event) => {
 					price: createForm.querySelector('input[name="create-item-price"]')
 						.value,
 					img: createForm.querySelector('input[name="create-item-imgURL"]')
+						.value,
+					description: createForm.querySelector('input[name="create-item-desc"]')
 						.value,
 				},
 				success: (data) => {
@@ -263,6 +269,10 @@ createBundle.addEventListener("click", (req, res) => {
 	<label for="create-bundle-imgURL">Image URL</label>
 	<input type="text" name="create-bundle-imgURL" id="create-bundle-imgURL" />
 	</div>
+	<div>
+	<label for="create-item-desc">Description</label>
+	<input type="text" name="create-bundle-desc" id="create-bundle-desc" />
+	</div>
 	<input id="createItemButton" type="submit" value="Submit" />
     </form>`;
 	modalHead.innerHTML = "Create Bundle";
@@ -284,6 +294,8 @@ createBundle.addEventListener("click", (req, res) => {
 					price: createForm.querySelector('input[name="create-bundle-price"]')
 						.value,
 					img: createForm.querySelector('input[name="create-bundle-imgURL"]')
+						.value,
+					description: createForm.querySelector('input[name="create-bundle-desc"]')
 						.value,
 				},
 				success: (data) => {

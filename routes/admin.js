@@ -69,11 +69,11 @@ router.get("/destroySession", async (req, res) => {
 });
 
 router.post("/createItem", async (req, res) => {
-	let name, price, url, data;
+	let name, price, url, data, description;
 	try {
 		name = validStr(req.body.name);
 		url = validStr(req.body.img);
-		description = validStr(req.body.description);
+		description = validStr(req.body.description, "Description");
 		price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250);
 		data = await createItem(name, url, price, [], description, false);
 		return res.json(data);
@@ -83,13 +83,14 @@ router.post("/createItem", async (req, res) => {
 });
 
 router.post("/createBundle", async (req, res) => {
-	let name, price, url, data;
+	let name, price, url, data, description;
 	try {
 		name = validStr(req.body.name);
 		url = validStr(req.body.img);
 		description = validStr(req.body.description);
+		console.log(description)
 		price = validNumber(parseFloat(req.body.price), "Price", false, 0, 250);
-		data = await createBundle(name, url, price, [], false);
+		data = await createBundle(name, url, price, [], description, false, true);
 		return res.json(data);
 	} catch (e) {
 		return res.status(400).json({ error: e });
