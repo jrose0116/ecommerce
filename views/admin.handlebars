@@ -75,7 +75,10 @@
 				<input type="text" id="edit-item-name" name="edit-item-name" value="{{name}}" />
 				<label for="edit-item-price">Price</label>
 				<input type="number" step="0.01" name="edit-item-price" id="edit-item-price" value="{{price}}" />
-				<input type="submit" value="Submit" />`
+				<input type="submit" value="Submit" />
+				<label for="edit-item-desc">Description</label>
+				<input type="text" id="edit-item-desc" name="edit-item-desc" value="{{description}}" />`
+				
 
 				document.getElementById("admin-modal-content").innerHTML = "";
 				document.getElementById("admin-modal-content").appendChild(form);
@@ -86,11 +89,12 @@
 
 					const editName = document.getElementById("edit-item-name").value
 					const editPrice = document.getElementById("edit-item-price").value
+					const editDescription = document.getElementById("edit-item-desc").value
 
 					$.ajax({
 						url: "/admin/edititem/{{_id}}",
 						method: "POST",
-						data: { name: editName, price: editPrice },
+						data: { name: editName, price: editPrice, description: editDescription },
 						credential: "same-origin",
 						success: (data) => {
 							try {
