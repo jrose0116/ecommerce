@@ -29,11 +29,11 @@ import bcrypt from "bcrypt";
 
 router.use("/", async (req, res, next) => {
 	try {
-		if (await bcrypt.compare(process.env.key, req.session.key)) {
+		if (await bcrypt.compare(process.env.key, req.session.key || "")) {
 			next()
 		} else {
 			console.log("Unauthorized: Redirected");
-			return res.redirect("/");
+			return res.redirect("/auth");
 		}
 	} catch (e) {
 		return res.redirect("/");
