@@ -61,6 +61,7 @@ body {
 	position: relative;
 	left: 75px;
 	height: calc(100vh);
+	margin: 0;
 	margin-bottom: 100px;
 	width: fit-content;
 	height: fit-content;
@@ -84,8 +85,8 @@ body {
 }
 
 .flex-parent-h {
-	width: calc(98vw - 75px);
-	margin-left: calc(1vw - 7px);
+	width: calc(100vw - 1vw - 75px);
+	margin-left: 1vw;
 	height: fit-content;
 	display: flex;
 	flex-direction: row;
@@ -197,11 +198,11 @@ body {
 	background-color: #4e5364;
 	color: #fff;
 	border: none;
-	padding: 10px 5px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	font-size: xx-small;
+	padding: 10px 5px;
 	border-radius: 5px;
 	font-size: small;
 	cursor: pointer;
@@ -739,11 +740,11 @@ label {
 .cart-card {
 	width: 100%;
 	display: flex;
-	/* align-content: space-around; */
-	justify-content: space-between;
+	justify-content: space-around;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	margin: 3px 0;
+	gap: 20px;
+	margin: 3px 5px;
 }
 
 #cart-card-items {
@@ -934,4 +935,14 @@ label {
 	position: absolute;
     top: 5px;
     right: 5px;
+}
+
+.details-cart {
+	display: block;
+	margin-top: 10px;
+	background-color: #4e5364;
+	color: white;
+	padding: 10px 15px;
+	border-radius: 5px;
+	border: 0px;
 }
