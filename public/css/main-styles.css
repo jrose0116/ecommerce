@@ -982,6 +982,7 @@ label {
 	margin: 10px 30px;
 	width: calc(100vw - 135px);
 	gap: 10px;
+	font-family: "Trebuchet MS", sans-serif;
 }
 
 .checkout-item {
@@ -997,4 +998,30 @@ label {
 
 .checkout-item-img {
 	height: 75px;
+}
+
+.checkout-form input, label {
+	margin-bottom: 10px;
+}
+
+.checkout-cart-header {
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: x-large;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+#orderButton {
+	margin-left: 40px;
+	background-color: #4e5364;
+	color: #fff;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: xx-small;
+	padding: 15px 25px;
+	border-radius: 5px;
+	font-size: small;
+	cursor: pointer;
 }

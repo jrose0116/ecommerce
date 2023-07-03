@@ -11,21 +11,42 @@
             {{/each}}
         </div>
     {{else}}
-    <div>Your Cart is Empty</div>
+    <div class="checkout-flex">Your Cart is Empty</div>
     {{/if}}
-    <h1 class="checkout-cart-header">Shipping Address</h1>
-    <form>
-        <label for="checkout-fname">First Name</label>
-        <input type="text" name="checkout-fname" id="checkout-fname"/>
-        <label for="checkout-lname">Last Name</label>
-        <input type="text" name="checkout-lname" id="checkout-lname"/>
-        <label for="checkout-add1">Address Line 1</label>
-        <input type="text" name="checkout-add1" id="checkout-add1"/>
-        <label for="checkout-add2">Address Line 2</label>
-        <input type="text" name="checkout-add2" id="checkout-add2"/>
-        <label for="checkout-city">City</label>
-        <input type="text" name="checkout-city" id="checkout-city"/>
-        <label for="checkout-zip">Zip</label>
-        <input type="text" name="checkout-zip" id="checkout-zip"/>
-    </form>
+    <div class="checkout-flex">
+        <h1 class="checkout-cart-header">Shipping Address</h1>
+        <form class="checkout-form">
+            <label for="checkout-fname">First Name</label>
+            <input type="text" name="checkout-fname" id="checkout-fname"/>
+            <br>
+            <label for="checkout-lname">Last Name</label>
+            <input type="text" name="checkout-lname" id="checkout-lname"/>
+            <br>
+            <label for="checkout-add1">Address Line 1</label>
+            <input type="text" name="checkout-add1" id="checkout-add1"/>
+            <br>
+            <label for="checkout-add2">Address Line 2</label>
+            <input type="text" name="checkout-add2" id="checkout-add2"/>
+            <br>
+            <label for="checkout-city">City</label>
+            <input type="text" name="checkout-city" id="checkout-city"/>
+            <br>
+            <label for="checkout-zip">Zip</label>
+            <input type="text" name="checkout-zip" id="checkout-zip"/>
+        </form>
+    </div>
+    <div class="checkout-flex">
+        <h1 class="checkout-cart-header">Payment Information</h1>
+        <form class="checkout-form">
+            <label for="checkout-cardnumber">Card Number</label>
+            <input type="text" name="checkout-cardnumber" id="checkout-cardnumber"/>
+            <br>
+            <label for="checkout-expiry">Expiration Date</label>
+            <input type="text" name="checkout-expiry" id="checkout-expiry"/>
+            <br>
+            <label for="checkout-cvv">CVV</label>
+            <input type="text" name="checkout-cvv" id="checkout-cvv"/>
+        </form>
+    </div>
+    <button id="orderButton">Place Order</button>
 </main>
