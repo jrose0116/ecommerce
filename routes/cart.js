@@ -10,14 +10,14 @@ export async function getCartItems(cart) {
 	cartItems = await Promise.all(
 		cartItems.map(async (cItem) => {
 			let quant = cItem[1];
-			if(cItem[2] == "item"){
+			if (cItem[2] == "item") {
 				let item = await getItem(cItem[0]);
 				item.quantity = quant;
 				item.isBundle = false;
 				cartTotal += item.price * quant;
 				return item;
 			}
-			if(cItem[2] == "bundle"){
+			if (cItem[2] == "bundle") {
 				let bundle = await getBundle(cItem[0]);
 				bundle.quantity = quant;
 				bundle.isBundle = true;
@@ -27,14 +27,14 @@ export async function getCartItems(cart) {
 		})
 	);
 
-	cartTotal = cartTotal.toFixed(2)
-	let cartExist = cartItems.length != 0
+	cartTotal = cartTotal.toFixed(2);
+	let cartExist = cartItems.length != 0;
 
-	return {cartItems, cartTotal, cartExist}
+	return { cartItems, cartTotal, cartExist };
 }
 
 router.route("/").get(async (req, res) => {
-	return res.render("checkout", { title: "Checkout", layout: 'co-layout' });
+	return res.render("checkout", { title: "Checkout", layout: "co-layout" });
 });
 
 export default router;

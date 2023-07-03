@@ -1,3 +1,31 @@
 <main>
-    {{!-- <h1>Checkout</h1> --}}
+    {{#if cartExist}}
+        <div class="checkout-flex">
+            <h1 class="checkout-cart-header">Your Cart</h1>
+            {{#each cartItems}}
+            <div class="checkout-item">
+                <img class="checkout-item-img" src="{{img}}" alt="{{name}}"/>
+                <p class="checkout-item-name">{{name}}</p>
+                <p class="checkout-item-price">${{price}} x {{quantity}}</p>
+            </div>
+            {{/each}}
+        </div>
+    {{else}}
+    <div>Your Cart is Empty</div>
+    {{/if}}
+    <h1 class="checkout-cart-header">Shipping Address</h1>
+    <form>
+        <label for="checkout-fname">First Name</label>
+        <input type="text" name="checkout-fname" id="checkout-fname"/>
+        <label for="checkout-lname">Last Name</label>
+        <input type="text" name="checkout-lname" id="checkout-lname"/>
+        <label for="checkout-add1">Address Line 1</label>
+        <input type="text" name="checkout-add1" id="checkout-add1"/>
+        <label for="checkout-add2">Address Line 2</label>
+        <input type="text" name="checkout-add2" id="checkout-add2"/>
+        <label for="checkout-city">City</label>
+        <input type="text" name="checkout-city" id="checkout-city"/>
+        <label for="checkout-zip">Zip</label>
+        <input type="text" name="checkout-zip" id="checkout-zip"/>
+    </form>
 </main>
