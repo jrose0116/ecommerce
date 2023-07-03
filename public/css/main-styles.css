@@ -1025,3 +1025,7 @@ label {
 	font-size: small;
 	cursor: pointer;
 }
+
+.checkout-summary-item {
+	margin: 2px 5px;
+}

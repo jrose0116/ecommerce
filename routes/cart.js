@@ -34,7 +34,7 @@ export async function getCartItems(cart) {
 }
 
 router.route("/").get(async (req, res) => {
-	return res.render("checkout", { title: "Checkout", layout: "co-layout" });
+	return res.render("checkout", { title: "Checkout", layout: "co-layout", cartShipping: 9.95, cartTax: ((parseFloat(res.locals.cartTotal) + 9.95)*0.0625).toFixed(2), cartFinal: ((parseFloat(res.locals.cartTotal) + 9.95)*0.0625).toFixed(2)});
 });
 
 export default router;
