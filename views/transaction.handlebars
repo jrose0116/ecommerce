@@ -1,0 +1,23 @@
+<div class="order-details">
+    <h1>Order Details</h1>
+    <div>
+        <p>Order ID: {{_id}}</p>
+        <p>First Name: {{fname}}</p>
+        <p>Last Name: {{lname}}</p>
+        <p>Address Line 1: {{add1}}</p>
+        <p>Address Line 2: {{add2}}</p>
+        <p>City: {{city}}</p>
+        <p>Zip: {{zip}}</p>
+        <p>Cart Items:</p>
+        <ul>
+        {{#each cart}}
+            <li>
+            <p>Product ID: {{this.[0]}}</p>
+            <p>Quantity: {{this.[1]}}</p>
+            <p>Type: {{this.[2]}}</p>
+            </li>
+        {{/each}}
+        </ul>
+        <p>Total: ${{total}}</p>
+    </div>
+</div>

@@ -1011,6 +1011,12 @@ label {
 	margin-bottom: 10px;
 }
 
+.checkout-cart-header2 {
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: x-large;
+	margin: 0;
+}
+
 #orderButton {
 	margin-left: 40px;
 	background-color: #4e5364;
@@ -1028,4 +1034,9 @@ label {
 
 .checkout-summary-item {
 	margin: 2px 5px;
+}
+
+.order-details {
+	font-family: "Trebuchet MS", sans-serif;
+	margin: 30px 40px;
 }

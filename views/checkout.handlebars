@@ -33,7 +33,8 @@
             </form>
         </div>
         <div class="checkout-flex">
-            <h1 class="checkout-cart-header">Payment Information</h1>
+            <h1 class="checkout-cart-header2">Payment Information </h1>
+            <p>(This is a mock website and doesn't sell anything... don't use your real payment info)</p>
             <form class="checkout-form">
                 <label for="checkout-cardnumber">Card Number</label>
                 <input type="text" name="checkout-cardnumber" id="checkout-cardnumber"/>
@@ -53,6 +54,7 @@
             <p class="checkout-summary-item">Total: ${{cartFinal}}</p>
         </div>
         <button id="orderButton">Place Order</button>
+        <script src="/public/js/checkout.js"></script>
     {{else}}
     <div class="checkout-flex">Your Cart is Empty</div>
     {{/if}}
